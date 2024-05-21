@@ -8,16 +8,8 @@ import {
   Flex,
   Heading,
   useDisclosure,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalCloseButton,
-  ModalBody,
-  ModalFooter,
+
   Button,
-  Input,
-  Select,
   Spinner,
   useToast,
   AlertDialog,
@@ -27,7 +19,7 @@ import {
   AlertDialogContent,
   AlertDialogOverlay,
 } from '@chakra-ui/react';
-import { EditIcon, DeleteIcon, AddIcon } from '@chakra-ui/icons';
+import { EditIcon, DeleteIcon, AddIcon, TriangleUpIcon } from '@chakra-ui/icons';
 import { getListData, editItem, addItem, deleteItem, deleteList } from '../Backend/Graphql_helper';
 import TaskEditModal from './TaskEditModal';
 import TaskAddButton from './AddTaskButton';
@@ -83,7 +75,7 @@ const TaskGrid = () => {
 
   const handleDeleteClick = (itemId) => {
     setDeleteTaskId(itemId);
-    setIsDeleting(true);
+    setIsDeleting(false)
     onAlertOpen();
   };
 
@@ -103,7 +95,6 @@ const TaskGrid = () => {
       fetchData();
       setDeleteTaskId(null);
       setDeleteListId(null);
-      setIsDeleting(false);
       toast({
         title: deleteTaskId ? 'Task deleted.' : 'List deleted.',
         description: deleteTaskId ? 'The task has been deleted successfully.' : 'The list has been deleted successfully.',
@@ -191,12 +182,12 @@ const TaskGrid = () => {
                         onClick={() => handleEditClick(task, parseInt(list.listid))}
                       />
                       <IconButton
-                        icon={isDeleting && deleteTaskId === task.itemid ? <Spinner size="sm" thickness="2px" speed="0.65s" color="red.500" /> : <DeleteIcon />}
+                        icon={isDeleting && (deleteTaskId === task.itemid || deleteListId === list.listid) ? <Spinner size="sm" thickness="2px" speed="0.65s" color="red.500" /> : <DeleteIcon />}
                         aria-label="Delete Task"
                         size="sm"
                         colorScheme="red"
                         onClick={() => handleDeleteClick(task.itemid)}
-                        isDisabled={isDeleting && deleteTaskId === task.itemid}
+                        isDisabled={isDeleting && (deleteTaskId === task.itemid || deleteListId === list.listid)}
                       />
                     </Flex>
                   </Flex>
@@ -233,7 +224,8 @@ const TaskGrid = () => {
               <Button ref={cancelRef} onClick={onAlertClose}>
                 Cancel
               </Button>
-              <Button colorScheme="red" onClick={confirmDelete} ml={3} isLoading={isDeleting}>
+
+              <Button colorScheme="red" onClick={confirmDelete} ml={3} >
                 Delete
               </Button>
             </AlertDialogFooter>

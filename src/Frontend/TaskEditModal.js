@@ -14,8 +14,7 @@ import {
   Flex,
   Text,
 } from '@chakra-ui/react';
-import { getListData, editItem, addItem, deleteItem, deleteList } from '../Backend/Graphql_helper';
-
+import { editItem } from '../Backend/Graphql_helper'; // Import the editItem function
 
 const TaskEditModal = ({ isOpen, onClose, task, listId, fetchData, listData }) => {
   const [taskName, setTaskName] = useState(task.itemname);
