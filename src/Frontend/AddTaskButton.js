@@ -17,14 +17,16 @@ import {
   Text
 } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
-import { addItem } from '../Backend/Graphql_helper';
+import { addItem, addList } from '../Backend/Graphql_helper';
 
 const TaskAddButton = ({ fetchData, listData }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [taskTitle, setTaskTitle] = useState('');
   const [taskStatus, setTaskStatus] = useState(1);
-  const [taskListId, setTaskListId] = useState(null);
+  const [taskListId, setTaskListId] = useState(''); // Initialize with an empty string
+  const [newListName, setNewListName] = useState('');
   const [isSaving, setIsSaving] = useState(false);
+  const [isAddingList, setIsAddingList] = useState(false);
 
   const handleAddTask = async () => {
     setIsSaving(true);
@@ -36,6 +38,20 @@ const TaskAddButton = ({ fetchData, listData }) => {
     } catch (error) {
       console.error('Failed to add task:', error);
       setIsSaving(false);
+    }
+  };
+
+  const handleAddList = async () => {
+    setIsAddingList(true);
+    try {
+      const newList = await addList(newListName);
+      fetchData();
+      setTaskListId(newList.data.create_list.listid); // Update the task list ID to the newly created list
+      setNewListName('');
+      setIsAddingList(false);
+    } catch (error) {
+      console.error('Failed to add list:', error);
+      setIsAddingList(false);
     }
   };
 
@@ -76,7 +92,8 @@ const TaskAddButton = ({ fetchData, listData }) => {
             <Select
               placeholder="Select List"
               value={taskListId}
-              onChange={(e) => setTaskListId(parseInt(e.target.value))}
+              onChange={(e) => setTaskListId(e.target.value || '')}
+              mb={4}
             >
               {listData.map((list) => (
                 <option key={list.listid} value={list.listid}>
@@ -84,6 +101,18 @@ const TaskAddButton = ({ fetchData, listData }) => {
                 </option>
               ))}
             </Select>
+            <Flex>
+              <Input
+                placeholder="New List Name"
+                value={newListName}
+                onChange={(e) => setNewListName(e.target.value)}
+                mb={4}
+                mr={2}
+              />
+              <Button onClick={handleAddList} isLoading={isAddingList} colorScheme="teal">
+                Add List
+              </Button>
+            </Flex>
           </ModalBody>
           <ModalFooter>
             {isSaving ? (

@@ -12,19 +12,21 @@ import {
   Select,
   Spinner,
   Flex,
-  Text
+  Text,
 } from '@chakra-ui/react';
-import { editItem } from '../Backend/Graphql_helper';
+import { getListData, editItem, addItem, deleteItem, deleteList } from '../Backend/Graphql_helper';
 
-const TaskEditModal = ({ isOpen, onClose, task, listId, fetchData }) => {
+
+const TaskEditModal = ({ isOpen, onClose, task, listId, fetchData, listData }) => {
   const [taskName, setTaskName] = useState(task.itemname);
   const [taskStatus, setTaskStatus] = useState(task.statusid);
+  const [taskListId, setTaskListId] = useState(listId);
   const [isSaving, setIsSaving] = useState(false);
 
   const handleSave = async () => {
     setIsSaving(true);
     try {
-      await editItem(task.itemid, taskName, listId, taskStatus);
+      await editItem(task.itemid, taskName, taskListId, taskStatus);
       fetchData();
       onClose();
       setIsSaving(false);
@@ -41,33 +43,44 @@ const TaskEditModal = ({ isOpen, onClose, task, listId, fetchData }) => {
         <ModalHeader>Edit Task</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <Text>Name</Text>
           <Input
-            value={taskName}
-            onChange={(e) => setTaskName(e.target.value)}
             placeholder="Task Name"
             mb={4}
+            value={taskName}
+            onChange={(e) => setTaskName(e.target.value)}
           />
-          <Text>Status</Text>
           <Select
-            value={taskStatus}
-            onChange={(e) => setTaskStatus(parseInt(e.target.value))}
             placeholder="Select Status"
             mb={4}
+            value={taskStatus}
+            onChange={(e) => setTaskStatus(parseInt(e.target.value))}
           >
             <option value={1}>Backlog</option>
             <option value={2}>To do</option>
             <option value={3}>Done</option>
           </Select>
+          <Select
+            placeholder="Select List"
+            mb={4}
+            value={taskListId}
+            onChange={(e) => setTaskListId(e.target.value)}
+          >
+            {listData.map((list) => (
+              <option key={list.listid} value={list.listid}>
+                {list.listname}
+              </option>
+            ))}
+          </Select>
         </ModalBody>
         <ModalFooter>
           {isSaving ? (
-            <Flex justifyContent="center" alignItems="center" height="100%">
-              <Spinner size="lg" thickness="4px" speed="0.65s" color="teal.500" />
+            <Flex align="center">
+              <Spinner size="md" thickness="4px" speed="0.65s" color="teal.500" />
+              <Text ml={3}>Saving...</Text>
             </Flex>
           ) : (
             <>
-              <Button colorScheme="teal" mr={3} onClick={handleSave}>
+              <Button colorScheme="blue" mr={3} onClick={handleSave}>
                 Save
               </Button>
               <Button variant="ghost" onClick={onClose}>

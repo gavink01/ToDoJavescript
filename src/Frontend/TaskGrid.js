@@ -28,7 +28,7 @@ import {
   AlertDialogOverlay,
 } from '@chakra-ui/react';
 import { EditIcon, DeleteIcon, AddIcon } from '@chakra-ui/icons';
-import { getListData, editItem, addItem, deleteItem } from '../Backend/Graphql_helper';
+import { getListData, editItem, addItem, deleteItem, deleteList } from '../Backend/Graphql_helper';
 import TaskEditModal from './TaskEditModal';
 import TaskAddButton from './AddTaskButton';
 
@@ -39,6 +39,7 @@ const TaskGrid = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isModalLoading, setIsModalLoading] = useState(false);
   const [deleteTaskId, setDeleteTaskId] = useState(null);
+  const [deleteListId, setDeleteListId] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { isOpen: isAlertOpen, onOpen: onAlertOpen, onClose: onAlertClose } = useDisclosure();
@@ -64,6 +65,7 @@ const TaskGrid = () => {
   const handleEditClick = (task, listId) => {
     setCurrentListId(listId);
     setCurrentTask(task);
+    onOpen();
   };
 
   const handleSave = async () => {
@@ -85,26 +87,37 @@ const TaskGrid = () => {
     onAlertOpen();
   };
 
+  const handleDeleteListClick = (listId) => {
+    setDeleteListId(listId);
+    onAlertOpen();
+  };
+
   const confirmDelete = async () => {
     try {
-      await deleteItem(deleteTaskId);
+      if (deleteTaskId) {
+        await deleteItem(deleteTaskId);
+      }
+      if (deleteListId) {
+        await deleteList(deleteListId);
+      }
       fetchData();
       setDeleteTaskId(null);
+      setDeleteListId(null);
       setIsDeleting(false);
       toast({
-        title: 'Task deleted.',
-        description: 'The task has been deleted successfully.',
+        title: deleteTaskId ? 'Task deleted.' : 'List deleted.',
+        description: deleteTaskId ? 'The task has been deleted successfully.' : 'The list has been deleted successfully.',
         status: 'success',
         duration: 5000,
         isClosable: true,
       });
       onAlertClose();
     } catch (error) {
-      console.error('Failed to delete task:', error);
+      console.error('Failed to delete:', error);
       setIsDeleting(false);
       toast({
         title: 'Error.',
-        description: 'Failed to delete the task.',
+        description: deleteTaskId ? 'Failed to delete the task.' : 'Failed to delete the list.',
         status: 'error',
         duration: 5000,
         isClosable: true,
@@ -140,9 +153,18 @@ const TaskGrid = () => {
               borderRadius="md"
               bg="gray.100"
             >
-              <Heading size="md" mb={4} color="teal.600">
-                {list.listname}
-              </Heading>
+              <Flex justifyContent="space-between" alignItems="center">
+                <Heading size="md" mb={4} color="teal.600">
+                  {list.listname}
+                </Heading>
+                <IconButton
+                  icon={<DeleteIcon />}
+                  aria-label="Delete List"
+                  size="sm"
+                  colorScheme="red"
+                  onClick={() => handleDeleteListClick(list.listid)}
+                />
+              </Flex>
               {[...notDoneTasks, ...doneTasks].map((task) => (
                 <Box
                   key={task.itemid}
@@ -194,31 +216,30 @@ const TaskGrid = () => {
           task={currentTask}
           listId={currentListId}
           fetchData={fetchData}
+          listData={listData} // Pass the list data to TaskEditModal
         />
       )}
       <TaskAddButton fetchData={fetchData} listData={listData} />
-      {deleteTaskId && (
-        <AlertDialog isOpen={isAlertOpen} leastDestructiveRef={cancelRef} onClose={onAlertClose}>
-          <AlertDialogOverlay>
-            <AlertDialogContent>
-              <AlertDialogHeader fontSize="lg" fontWeight="bold">
-                Delete Task
-              </AlertDialogHeader>
+      <AlertDialog isOpen={isAlertOpen} leastDestructiveRef={cancelRef} onClose={onAlertClose}>
+        <AlertDialogOverlay>
+          <AlertDialogContent>
+            <AlertDialogHeader fontSize="lg" fontWeight="bold">
+              {deleteTaskId ? 'Delete Task' : 'Delete List'}
+            </AlertDialogHeader>
 
-              <AlertDialogBody>Are you sure? You can't undo this action afterwards.</AlertDialogBody>
+            <AlertDialogBody>Are you sure? You can't undo this action afterwards.</AlertDialogBody>
 
-              <AlertDialogFooter>
-                <Button ref={cancelRef} onClick={onAlertClose}>
-                  Cancel
-                </Button>
-                <Button colorScheme="red" onClick={confirmDelete} ml={3}>
-                  Delete
-                </Button>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialogOverlay>
-        </AlertDialog>
-      )}
+            <AlertDialogFooter>
+              <Button ref={cancelRef} onClick={onAlertClose}>
+                Cancel
+              </Button>
+              <Button colorScheme="red" onClick={confirmDelete} ml={3} isLoading={isDeleting}>
+                Delete
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
     </>
   );
 };

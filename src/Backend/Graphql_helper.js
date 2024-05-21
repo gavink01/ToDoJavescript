@@ -51,25 +51,65 @@ async function getListData() {
 
 
 // Mutation functions
-async function addItem(itemName, listId, statusId) {
-    const addItemMutation = `
-        mutation ($i: itemInput) {
-            create_item(input: $i) {
-                itemid
-                itemname
-                status_value {
-                    statusname
-                }
-                list {
-                    listname
-                }
-            }
-        }`;
-    const variables = {
-        i: { itemname: itemName, listid: Number(listId), statusid: Number(statusId) }
-    };
-    return executeGraphqlQuery(addItemMutation, variables);
-}
+
+const addItem = async (itemName, listId, statusId) => {
+  const addItemMutation = `
+    mutation ($i: itemInput) {
+      create_item(input: $i) {
+        itemid
+        itemname
+        status_value {
+          statusname
+        }
+        list {
+          listname
+        }
+      }
+    }`;
+  const variables = {
+    i: { itemname: itemName, listid: Number(listId), statusid: Number(statusId) }
+  };
+  return executeGraphqlQuery(addItemMutation, variables);
+};
+
+export const addList = async (listName) => {
+  const addListMutation = `
+    mutation ($i: listInput) {
+      create_list(input: $i) {
+        listid
+        listname
+      }
+    }`;
+  const variables = {
+    i: { listname: listName }
+  };
+  return executeGraphqlQuery(addListMutation, variables);
+};
+
+export const deleteItem = async (itemId) => {
+  const deleteItemMutation = `
+    mutation ($i: ID!) {
+      delete_item(itemid: $i) {
+        itemid
+        itemname
+      }
+    }`;
+  const variables = { i: itemId };
+  return executeGraphqlQuery(deleteItemMutation, variables);
+};
+
+export const deleteList = async (listId) => {
+  const deleteListMutation = `
+    mutation ($i: ID!) {
+      delete_list(listid: $i) {
+        listid
+        listname
+      }
+    }`;
+  const variables = { i: listId };
+  return executeGraphqlQuery(deleteListMutation, variables);
+};
+
 
 async function editItem(itemId, newName, listId, statusId) {
     const editItemMutation = `
@@ -94,17 +134,7 @@ async function editItem(itemId, newName, listId, statusId) {
     return executeGraphqlQuery(editItemMutation, variables);
 }
 
-async function deleteItem(itemId) {
-    const deleteItemMutation = `
-        mutation ($i: ID!) {
-            delete_item(itemid: $i) {
-                itemid
-                itemname
-            }
-        }`;
-    const variables = { i: itemId };
-    return executeGraphqlQuery(deleteItemMutation, variables);
-}
+
 
 // Export the functions to be used elsewhere in the project
-export { getListData,editItem,addItem,deleteItem };
+export { getListData,editItem,addItem };
