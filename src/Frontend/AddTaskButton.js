@@ -14,7 +14,7 @@ import {
   Select,
   Spinner,
   Flex,
-  Text
+  Text,
 } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
 import { addItem, addList } from '../Backend/Graphql_helper';
@@ -57,16 +57,18 @@ const TaskAddButton = ({ fetchData, listData }) => {
 
   return (
     <>
-      <IconButton
-        icon={<AddIcon />}
-        aria-label="Add Task"
-        size="lg"
-        position="fixed"
-        bottom={4}
-        right={4}
-        colorScheme="teal"
-        onClick={onOpen}
-      />
+      <Button
+  leftIcon={<AddIcon />}
+  aria-label="Add Task"
+  size="lg"
+  position="fixed"
+  bottom={4}
+  right={4}
+  colorScheme="teal"
+  onClick={onOpen}
+>
+  Add Task
+</Button>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
