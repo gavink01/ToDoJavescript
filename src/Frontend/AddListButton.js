@@ -1,22 +1,22 @@
 import React, { useState } from 'react';
 import {
-  useDisclosure,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalCloseButton,
-  ModalBody,
-  ModalFooter,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverHeader,
+  PopoverBody,
+  PopoverFooter,
+  PopoverArrow,
+  PopoverCloseButton,
   Button,
   Input,
   Flex,
+  Box,
 } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
 import { addList } from '../Backend/Graphql_helper';
 
 const ListAddButton = ({ fetchData }) => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
   const [newListName, setNewListName] = useState('');
   const [isAddingList, setIsAddingList] = useState(false);
 
@@ -27,7 +27,6 @@ const ListAddButton = ({ fetchData }) => {
       fetchData();
       setNewListName('');
       setIsAddingList(false);
-      onClose();
     } catch (error) {
       console.error('Failed to add list:', error);
       setIsAddingList(false);
@@ -35,25 +34,18 @@ const ListAddButton = ({ fetchData }) => {
   };
 
   return (
-    <>
-      <Button
-        leftIcon={<AddIcon />}
-        aria-label="Add Task"
-        size="lg"
-        position="fixed"
-        bottom={75}
-        right={4}
-        colorScheme="teal"
-        onClick={onOpen}
-      >
-        Add List
-      </Button>
-      <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Add a new list</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
+    <Box position="fixed" bottom={75} right={4}>
+      <Popover>
+        <PopoverTrigger>
+          <Button leftIcon={<AddIcon />} colorScheme="teal" size={'lg'} >
+            Add List
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent>
+          <PopoverArrow />
+          <PopoverCloseButton />
+          <PopoverHeader>Add a new list</PopoverHeader>
+          <PopoverBody>
             <Flex>
               <Input
                 placeholder="New List Name"
@@ -63,14 +55,13 @@ const ListAddButton = ({ fetchData }) => {
                 mr={2}
               />
               <Button onClick={handleAddList} isLoading={isAddingList} colorScheme="teal">
-                Add List
+                Add
               </Button>
             </Flex>
-          </ModalBody>
-          <ModalFooter />
-        </ModalContent>
-      </Modal>
-    </>
+          </PopoverBody>
+        </PopoverContent>
+      </Popover>
+    </Box>
   );
 };
 
