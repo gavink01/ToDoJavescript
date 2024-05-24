@@ -19,7 +19,7 @@ import {
 import { AddIcon } from '@chakra-ui/icons';
 import { addItem, addList } from '../Backend/Graphql_helper';
 
-const TaskAddButton = ({ fetchData, listData }) => {
+const ListAddButton = ({ fetchData, listData }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [taskTitle, setTaskTitle] = useState('');
   const [taskStatus, setTaskStatus] = useState(1);
@@ -28,19 +28,20 @@ const TaskAddButton = ({ fetchData, listData }) => {
   const [isSaving, setIsSaving] = useState(false);
   const [isAddingList, setIsAddingList] = useState(false);
 
-  const handleAddTask = async () => {
-    setIsSaving(true);
+
+  const handleAddList = async () => {
+    setIsAddingList(true);
     try {
-      await addItem(taskTitle, taskListId, taskStatus);
+      const newList = await addList(newListName);
       fetchData();
-      onClose();
-      setIsSaving(false);
+      setTaskListId(newList.data.create_list.listid); // Update the task list ID to the newly created list
+      setNewListName('');
+      setIsAddingList(false);
     } catch (error) {
-      console.error('Failed to add task:', error);
-      setIsSaving(false);
+      console.error('Failed to add list:', error);
+      setIsAddingList(false);
     }
   };
-
 
   return (
     <>
@@ -49,12 +50,12 @@ const TaskAddButton = ({ fetchData, listData }) => {
   aria-label="Add Task"
   size="lg"
   position="fixed"
-  bottom={4}
+  bottom={75}
   right={4}
   colorScheme="teal"
   onClick={onOpen}
 >
-  Add Task
+  Add List
 </Button>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
@@ -62,36 +63,17 @@ const TaskAddButton = ({ fetchData, listData }) => {
           <ModalHeader>Add a new task</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <Input
-              placeholder="Task Title"
-              mb={4}
-              value={taskTitle}
-              onChange={(e) => setTaskTitle(e.target.value)}
-            />
-            <Select
-              placeholder="Select Status"
-              mb={4}
-              value={taskStatus}
-              onChange={(e) => setTaskStatus(parseInt(e.target.value))}
-            >
-              <option value={1}>Backlog</option>
-              <option value={2}>To do</option>
-              <option value={3}>Done</option>
-            </Select>
-            <Select
-              placeholder="Select List"
-              value={taskListId}
-              onChange={(e) => setTaskListId(e.target.value || '')}
-              mb={4}
-            >
-              {listData.map((list) => (
-                <option key={list.listid} value={list.listid}>
-                  {list.listname}
-                </option>
-              ))}
-            </Select>
             <Flex>
-              
+              <Input
+                placeholder="New List Name"
+                value={newListName}
+                onChange={(e) => setNewListName(e.target.value)}
+                mb={4}
+                mr={2}
+              />
+              <Button onClick={handleAddList} isLoading={isAddingList} colorScheme="teal">
+                Add List
+              </Button>
             </Flex>
           </ModalBody>
           <ModalFooter>
@@ -102,12 +84,9 @@ const TaskAddButton = ({ fetchData, listData }) => {
               </Flex>
             ) : (
               <>
-                <Button colorScheme="blue" mr={3} onClick={handleAddTask}>
+                {/* <Button colorScheme="blue" mr={3} onClick={handleAddTask}>
                   Save
-                </Button>
-                <Button variant="ghost" onClick={onClose}>
-                  Cancel
-                </Button>
+                </Button> */}
               </>
             )}
           </ModalFooter>
@@ -117,4 +96,4 @@ const TaskAddButton = ({ fetchData, listData }) => {
   );
 };
 
-export default TaskAddButton;
+export default ListAddButton;

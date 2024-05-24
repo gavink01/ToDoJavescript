@@ -25,6 +25,7 @@ import { getListData, editItem, addItem, deleteItem, deleteList, editList } from
 import TaskEditModal from './TaskEditModal';
 import TaskAddButton from './AddTaskButton';
 import ListEditModal from './ListEditModal'; 
+import ListAddButton from './AddListButton';
 
 const TaskGrid = () => {
   const [listData, setListData] = useState([]);
@@ -215,6 +216,8 @@ const TaskGrid = () => {
                   </Text>
                 </Box>
               ))}
+                    <TaskAddButton fetchData={fetchData} listData={listData} />
+      <ListAddButton fetchData={fetchData} listData={listData} />
             </Box>
           );
         })}
@@ -237,7 +240,9 @@ const TaskGrid = () => {
           fetchData={fetchData}
         />
       )}
-      <TaskAddButton fetchData={fetchData} listData={listData} />
+      {/* <Divider mt={4} mb={4} borderColor='black' borderWidth={2} borderRadius={4} /> */}
+
+
       <AlertDialog isOpen={isAlertOpen} leastDestructiveRef={cancelRef} onClose={onAlertClose}>
         <AlertDialogOverlay>
           <AlertDialogContent>
