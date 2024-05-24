@@ -24,9 +24,7 @@ const TaskAddButton = ({ fetchData, listData }) => {
   const [taskTitle, setTaskTitle] = useState('');
   const [taskStatus, setTaskStatus] = useState(1);
   const [taskListId, setTaskListId] = useState(''); // Initialize with an empty string
-  const [newListName, setNewListName] = useState('');
   const [isSaving, setIsSaving] = useState(false);
-  const [isAddingList, setIsAddingList] = useState(false);
 
   const handleAddTask = async () => {
     setIsSaving(true);

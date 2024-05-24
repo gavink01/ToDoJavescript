@@ -19,10 +19,8 @@ import {
 import { AddIcon } from '@chakra-ui/icons';
 import { addItem, addList } from '../Backend/Graphql_helper';
 
-const ListAddButton = ({ fetchData, listData }) => {
+const ListAddButton = ({ fetchData }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [taskTitle, setTaskTitle] = useState('');
-  const [taskStatus, setTaskStatus] = useState(1);
   const [taskListId, setTaskListId] = useState(''); // Initialize with an empty string
   const [newListName, setNewListName] = useState('');
   const [isSaving, setIsSaving] = useState(false);
@@ -60,7 +58,7 @@ const ListAddButton = ({ fetchData, listData }) => {
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Add a new task</ModalHeader>
+          <ModalHeader>Add a new list</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <Flex>
