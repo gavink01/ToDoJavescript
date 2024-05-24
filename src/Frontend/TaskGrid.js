@@ -8,7 +8,6 @@ import {
   Flex,
   Heading,
   useDisclosure,
-
   Button,
   Spinner,
   useToast,
@@ -19,6 +18,7 @@ import {
   AlertDialogContent,
   AlertDialogOverlay,
   Divider,
+  useTheme,
 } from '@chakra-ui/react';
 import { EditIcon, DeleteIcon, AddIcon, TriangleUpIcon, StarIcon } from '@chakra-ui/icons';
 import { getListData, editItem, addItem, deleteItem, deleteList, editList } from '../Backend/Graphql_helper';
@@ -42,6 +42,8 @@ const TaskGrid = () => {
   const { isOpen: isAlertOpen, onOpen: onAlertOpen, onClose: onAlertClose } = useDisclosure();
   const cancelRef = useRef();
   const toast = useToast();
+
+  const theme = useTheme();
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -139,7 +141,7 @@ const TaskGrid = () => {
   }
 
   return (
-    <>
+    <Box bgGradient='linear(to-l, #7928CA, #FF0080)' h="100vh">
       <SimpleGrid columns={[1, 2, 3]} spacing={6} p={5}>
         {listData.map((list) => {
           const notDoneTasks = list.item_collection.filter((task) => task.statusid !== 3);
@@ -196,7 +198,7 @@ const TaskGrid = () => {
                     <Flex>
                     <IconButton
                         icon={<StarIcon />}
-                        aria-label="Edit Task"
+                        aria-label="Favorite Task"
                         size="sm"
                         mr={2}
                         colorScheme="yellow"
@@ -273,7 +275,7 @@ const TaskGrid = () => {
           </AlertDialogContent>
         </AlertDialogOverlay>
       </AlertDialog>
-    </>
+    </Box>
   );
 };
 

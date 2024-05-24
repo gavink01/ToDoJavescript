@@ -51,7 +51,7 @@ const ListAddButton = ({ fetchData }) => {
                 mb={4}
                 mr={2}
               />
-              <Button onClick={handleAddList} isLoading={isAddingList} colorScheme="teal">
+              <Button onClick={handleAddList} isLoading={isAddingList} colorScheme="blue">
                 Add
               </Button>
             </Flex>

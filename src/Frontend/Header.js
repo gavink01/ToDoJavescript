@@ -15,7 +15,7 @@ import {
 
 const Header = () => {
   return (
-    <Box bg="cadetblue" w="100%" p={4} color="white" >
+    <Box bg="blue.200" w="100%" p={4} color="white" >
       <Flex h={16} alignItems={'center'} justifyContent={'center'} >
         <Text fontSize="2xl" fontWeight="bold">
           To Do App
