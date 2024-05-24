@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import {
-  IconButton,
   useDisclosure,
   Modal,
   ModalOverlay,
@@ -11,30 +10,24 @@ import {
   ModalFooter,
   Button,
   Input,
-  Select,
-  Spinner,
   Flex,
-  Text,
 } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
-import { addItem, addList } from '../Backend/Graphql_helper';
+import { addList } from '../Backend/Graphql_helper';
 
 const ListAddButton = ({ fetchData }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [taskListId, setTaskListId] = useState(''); // Initialize with an empty string
   const [newListName, setNewListName] = useState('');
-  const [isSaving, setIsSaving] = useState(false);
   const [isAddingList, setIsAddingList] = useState(false);
-
 
   const handleAddList = async () => {
     setIsAddingList(true);
     try {
-      const newList = await addList(newListName);
+      await addList(newListName);
       fetchData();
-      setTaskListId(newList.data.create_list.listid); // Update the task list ID to the newly created list
       setNewListName('');
       setIsAddingList(false);
+      onClose();
     } catch (error) {
       console.error('Failed to add list:', error);
       setIsAddingList(false);
@@ -44,17 +37,17 @@ const ListAddButton = ({ fetchData }) => {
   return (
     <>
       <Button
-  leftIcon={<AddIcon />}
-  aria-label="Add Task"
-  size="lg"
-  position="fixed"
-  bottom={75}
-  right={4}
-  colorScheme="teal"
-  onClick={onOpen}
->
-  Add List
-</Button>
+        leftIcon={<AddIcon />}
+        aria-label="Add Task"
+        size="lg"
+        position="fixed"
+        bottom={75}
+        right={4}
+        colorScheme="teal"
+        onClick={onOpen}
+      >
+        Add List
+      </Button>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
@@ -74,20 +67,7 @@ const ListAddButton = ({ fetchData }) => {
               </Button>
             </Flex>
           </ModalBody>
-          <ModalFooter>
-            {isSaving ? (
-              <Flex align="center">
-                <Spinner size="md" thickness="4px" speed="0.65s" color="teal.500" />
-                <Text ml={3}>Saving...</Text>
-              </Flex>
-            ) : (
-              <>
-                {/* <Button colorScheme="blue" mr={3} onClick={handleAddTask}>
-                  Save
-                </Button> */}
-              </>
-            )}
-          </ModalFooter>
+          <ModalFooter />
         </ModalContent>
       </Modal>
     </>
