@@ -18,6 +18,7 @@ import {
   AlertDialogHeader,
   AlertDialogContent,
   AlertDialogOverlay,
+  Divider,
 } from '@chakra-ui/react';
 import { EditIcon, DeleteIcon, AddIcon, TriangleUpIcon } from '@chakra-ui/icons';
 import { getListData, editItem, addItem, deleteItem, deleteList, editList } from '../Backend/Graphql_helper';
@@ -153,7 +154,7 @@ const TaskGrid = () => {
               bg="gray.100"
             >
               <Flex justifyContent="space-between" alignItems="center">
-                <Heading size="md" mb={4} color="teal.600">
+                <Heading size="md" color="teal.600">
                   {list.listname}
                 </Heading>
                 <Flex>
@@ -174,6 +175,7 @@ const TaskGrid = () => {
                   />
                 </Flex>
               </Flex>
+              <Divider mb={4} mt={4} borderColor='black' borderWidth={2} borderRadius={4} />
               {[...notDoneTasks, ...doneTasks].map((task) => (
                 <Box
                   key={task.itemid}
