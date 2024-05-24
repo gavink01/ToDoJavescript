@@ -134,7 +134,21 @@ async function editItem(itemId, newName, listId, statusId) {
     return executeGraphqlQuery(editItemMutation, variables);
 }
 
+async function editList(listId, newName) {
+  const editListMutation = `
+    mutation ($i: listInput, $j: ID!) {
+      update_list(input: $i, listid: $j) {
+        listid
+        listname
+      }
+    }`;
+  const variables = {
+    j: listId,
+    i: { listname: newName }
+  };
+  return executeGraphqlQuery(editListMutation, variables);
+}
 
 
 // Export the functions to be used elsewhere in the project
-export { getListData,editItem,addItem };
+export { getListData,editItem,addItem, editList };

@@ -20,13 +20,15 @@ import {
   AlertDialogOverlay,
 } from '@chakra-ui/react';
 import { EditIcon, DeleteIcon, AddIcon, TriangleUpIcon } from '@chakra-ui/icons';
-import { getListData, editItem, addItem, deleteItem, deleteList } from '../Backend/Graphql_helper';
+import { getListData, editItem, addItem, deleteItem, deleteList, editList } from '../Backend/Graphql_helper';
 import TaskEditModal from './TaskEditModal';
 import TaskAddButton from './AddTaskButton';
+import ListEditModal from './ListEditModal'; 
 
 const TaskGrid = () => {
   const [listData, setListData] = useState([]);
   const [currentTask, setCurrentTask] = useState(null);
+  const [currentList, setCurrentList] = useState(null); 
   const [currentListId, setCurrentListId] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isModalLoading, setIsModalLoading] = useState(false);
@@ -34,6 +36,7 @@ const TaskGrid = () => {
   const [deleteListId, setDeleteListId] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen: isListModalOpen, onOpen: onListModalOpen, onClose: onListModalClose } = useDisclosure();
   const { isOpen: isAlertOpen, onOpen: onAlertOpen, onClose: onAlertClose } = useDisclosure();
   const cancelRef = useRef();
   const toast = useToast();
@@ -58,6 +61,11 @@ const TaskGrid = () => {
     setCurrentListId(listId);
     setCurrentTask(task);
     onOpen();
+  };
+
+  const handleEditListClick = (list) => {
+    setCurrentList(list);
+    onListModalOpen();
   };
 
   const handleSave = async () => {
@@ -148,13 +156,23 @@ const TaskGrid = () => {
                 <Heading size="md" mb={4} color="teal.600">
                   {list.listname}
                 </Heading>
-                <IconButton
-                  icon={<DeleteIcon />}
-                  aria-label="Delete List"
-                  size="sm"
-                  colorScheme="red"
-                  onClick={() => handleDeleteListClick(list.listid)}
-                />
+                <Flex>
+                  <IconButton
+                    icon={<EditIcon />}
+                    aria-label="Edit List"
+                    size="sm"
+                    colorScheme="blue"
+                    mr={2}
+                    onClick={() => handleEditListClick(list)}
+                  />
+                  <IconButton
+                    icon={<DeleteIcon />}
+                    aria-label="Delete List"
+                    size="sm"
+                    colorScheme="red"
+                    onClick={() => handleDeleteListClick(list.listid)}
+                  />
+                </Flex>
               </Flex>
               {[...notDoneTasks, ...doneTasks].map((task) => (
                 <Box
@@ -182,12 +200,11 @@ const TaskGrid = () => {
                         onClick={() => handleEditClick(task, parseInt(list.listid))}
                       />
                       <IconButton
-                        icon={isDeleting && (deleteTaskId === task.itemid || deleteListId === list.listid) ? <Spinner size="sm" thickness="2px" speed="0.65s" color="red.500" /> : <DeleteIcon />}
+                        icon={<DeleteIcon />}
                         aria-label="Delete Task"
                         size="sm"
                         colorScheme="red"
                         onClick={() => handleDeleteClick(task.itemid)}
-                        isDisabled={isDeleting && (deleteTaskId === task.itemid || deleteListId === list.listid)}
                       />
                     </Flex>
                   </Flex>
@@ -207,7 +224,15 @@ const TaskGrid = () => {
           task={currentTask}
           listId={currentListId}
           fetchData={fetchData}
-          listData={listData} // Pass the list data to TaskEditModal
+          listData={listData}
+        />
+      )}
+      {currentList && (
+        <ListEditModal
+          isOpen={isListModalOpen}
+          onClose={() => setCurrentList(null)}
+          list={currentList}
+          fetchData={fetchData}
         />
       )}
       <TaskAddButton fetchData={fetchData} listData={listData} />
@@ -225,7 +250,7 @@ const TaskGrid = () => {
                 Cancel
               </Button>
 
-              <Button colorScheme="red" onClick={confirmDelete} ml={3} >
+              <Button colorScheme="red" onClick={confirmDelete} ml={3}>
                 Delete
               </Button>
             </AlertDialogFooter>
