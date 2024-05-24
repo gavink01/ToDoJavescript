@@ -5,8 +5,6 @@ import {
   PopoverContent,
   PopoverHeader,
   PopoverBody,
-  PopoverFooter,
-  PopoverArrow,
   PopoverCloseButton,
   Button,
   Input,
@@ -42,7 +40,6 @@ const ListAddButton = ({ fetchData }) => {
           </Button>
         </PopoverTrigger>
         <PopoverContent>
-          <PopoverArrow />
           <PopoverCloseButton />
           <PopoverHeader>Add a new list</PopoverHeader>
           <PopoverBody>
