@@ -200,6 +200,7 @@ const TaskGrid = () => {
                         size="sm"
                         mr={2}
                         colorScheme="yellow"
+                        color={'white'}
                         // onClick={() => handleEditClick(task, parseInt(list.listid))}
                       />
                       <IconButton
