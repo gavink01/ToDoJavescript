@@ -20,7 +20,7 @@ import {
   AlertDialogOverlay,
   Divider,
 } from '@chakra-ui/react';
-import { EditIcon, DeleteIcon, AddIcon, TriangleUpIcon } from '@chakra-ui/icons';
+import { EditIcon, DeleteIcon, AddIcon, TriangleUpIcon, StarIcon } from '@chakra-ui/icons';
 import { getListData, editItem, addItem, deleteItem, deleteList, editList } from '../Backend/Graphql_helper';
 import TaskEditModal from './TaskEditModal';
 import TaskAddButton from './AddTaskButton';
@@ -194,6 +194,14 @@ const TaskGrid = () => {
                       </Text>
                     </Checkbox>
                     <Flex>
+                    <IconButton
+                        icon={<StarIcon />}
+                        aria-label="Edit Task"
+                        size="sm"
+                        mr={2}
+                        colorScheme="yellow"
+                        // onClick={() => handleEditClick(task, parseInt(list.listid))}
+                      />
                       <IconButton
                         icon={<EditIcon />}
                         aria-label="Edit Task"
