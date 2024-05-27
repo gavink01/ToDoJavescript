@@ -21,7 +21,7 @@ import {
   useTheme,
 } from '@chakra-ui/react';
 import { EditIcon, DeleteIcon, AddIcon, StarIcon } from '@chakra-ui/icons';
-import { getListData, editItem, addItem, deleteItem, deleteList, editList, updateItemFavoritedStatus } from '../Backend/Graphql_helper';
+import { getListData, editItem, addItem, deleteItem, deleteList, editList, updateItemFavoritedStatus, updateItemStatus } from '../Backend/Graphql_helper';
 import TaskEditModal from './TaskEditModal';
 import TaskAddButton from './AddTaskButton';
 import ListEditModal from './ListEditModal'; 
@@ -81,6 +81,22 @@ const TaskGrid = () => {
       toast({
         title: 'Error.',
         description: 'Failed to update favorite status.',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+  };
+
+  const handleCheckboxClick = async (task) => {
+    try {
+      await updateItemStatus(task.itemid, task.itemname, task.statusid = 3);
+      fetchData();
+    } catch (error) {
+      console.error('Failed to update status:', error);
+      toast({
+        title: 'Error.',
+        description: 'Failed to update status.',
         status: 'error',
         duration: 5000,
         isClosable: true,
@@ -224,7 +240,7 @@ const TaskGrid = () => {
                   }}
                 >
                   <Flex justifyContent="space-between" alignItems="center">
-                    <Checkbox isChecked={task.statusid === 3} colorScheme="teal">
+                    <Checkbox isChecked={task.statusid === 3} colorScheme="teal" onClick={() => handleCheckboxClick(task)}>
                       <Text as={task.statusid === 3 ? 's' : 'span'} color={task.statusid === 3 ? 'green.600' : 'gray.800'}>
                         {task.status_value.statusname}
                       </Text>

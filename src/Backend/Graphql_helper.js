@@ -162,6 +162,17 @@ export const updateItemFavoritedStatus = async (itemId, itemname, isfavorited) =
   return executeGraphqlQuery(updateItemFavoritedStatusMutation, variables);
 };
 
+export const updateItemStatus = async (itemId, itemname, statusId) => {
+  const updateItemStatusMutation = `
+  mutation updatestatus($i: ID!, $j: itemInput!) {
+    update_item(itemid: $i, input: $j) {
+      itemid
+      statusid
+    }
+  }`;
+  const variables = { i: itemId, j: { statusid: statusId, itemname: itemname }};
+  return executeGraphqlQuery(updateItemStatusMutation, variables);
+};
 
 
 // Export the functions to be used elsewhere in the project
