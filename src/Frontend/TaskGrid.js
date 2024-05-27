@@ -20,8 +20,8 @@ import {
   Divider,
   useTheme,
 } from '@chakra-ui/react';
-import { EditIcon, DeleteIcon, AddIcon, TriangleUpIcon, StarIcon } from '@chakra-ui/icons';
-import { getListData, editItem, addItem, deleteItem, deleteList, editList } from '../Backend/Graphql_helper';
+import { EditIcon, DeleteIcon, AddIcon, StarIcon } from '@chakra-ui/icons';
+import { getListData, editItem, addItem, deleteItem, deleteList, editList, updateItemFavoritedStatus } from '../Backend/Graphql_helper';
 import TaskEditModal from './TaskEditModal';
 import TaskAddButton from './AddTaskButton';
 import ListEditModal from './ListEditModal'; 
@@ -72,8 +72,20 @@ const TaskGrid = () => {
     onListModalOpen();
   };
 
-  const handleFavotiteClick = (task) => {
-
+  const handleFavoriteClick = async (task) => {
+    try {
+      await updateItemFavoritedStatus(task.itemid, !task.itemname);
+      fetchData();
+    } catch (error) {
+      console.error('Failed to update favorite status:', error);
+      toast({
+        title: 'Error.',
+        description: 'Failed to update favorite status.',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
+    }
   };
 
   const handleSave = async () => {
@@ -159,7 +171,7 @@ const TaskGrid = () => {
               bg="secondary.100"
               borderRadius="md"
               boxShadow="brutalShadow"
-        sx={{
+              sx={{
                 borderRightWidth: '4px',
                 borderBottomWidth: '4px',
                 borderTopWidth: '2px',
@@ -217,14 +229,13 @@ const TaskGrid = () => {
                       </Text>
                     </Checkbox>
                     <Flex>
-                    <IconButton
+                      <IconButton
                         icon={<StarIcon />}
                         aria-label="Favorite Task"
                         size="sm"
                         mr={2}
-                        colorScheme="yellow"
-                        color={'white'}
-                        // onClick={() => handleFavotiteClick(task, parseInt(list.listid))}
+                        colorScheme={task.isfavorited ? "yellow" : "gray"}
+                        onClick={() => handleFavoriteClick(task)}
                       />
                       <IconButton
                         icon={<EditIcon />}
@@ -248,8 +259,8 @@ const TaskGrid = () => {
                   </Text>
                 </Box>
               ))}
-                    <TaskAddButton fetchData={fetchData} listData={listData} />
-      <ListAddButton fetchData={fetchData} listData={listData} />
+              <TaskAddButton fetchData={fetchData} listData={listData} />
+              <ListAddButton fetchData={fetchData} listData={listData} />
             </Box>
           );
         })}
@@ -272,9 +283,6 @@ const TaskGrid = () => {
           fetchData={fetchData}
         />
       )}
-      {/* <Divider mt={4} mb={4} borderColor='black' borderWidth={2} borderRadius={4} /> */}
-
-
       <AlertDialog isOpen={isAlertOpen} leastDestructiveRef={cancelRef} onClose={onAlertClose}>
         <AlertDialogOverlay>
           <AlertDialogContent>

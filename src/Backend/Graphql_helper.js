@@ -149,19 +149,19 @@ async function editList(listId, newName) {
   return executeGraphqlQuery(editListMutation, variables);
 }
 
-export const updateItemFavoritedStatus = async (itemId, isFavorited) => {
+export const updateItemFavoritedStatus = async (itemId, itemname) => {
   const updateItemFavoritedStatusMutation = `
-    mutation ($i: ID!, $fav: Boolean!) {
-      update_item(itemid: $i, isfavorited: $fav) {
-        itemid
-        isfavorited
-      }
-    }`;
-  const variables = { i: itemId, fav: isFavorited };
+  mutation updatefavorite($i: ID!, $j: itemInput!) {
+    update_item(itemid: $i, input: $j) {
+      itemid
+      isfavorited
+    }
+  }`;
+  const variables = { i: itemId, j: { isfavorited: true, itemname: itemname }};
   return executeGraphqlQuery(updateItemFavoritedStatusMutation, variables);
 };
 
 
 
 // Export the functions to be used elsewhere in the project
-export { getListData,editItem,addItem, editList, deleteItem, deleteList, updateItemFavoritedStatus };
+export { getListData,editItem,addItem, editList };
