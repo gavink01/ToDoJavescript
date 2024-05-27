@@ -39,6 +39,7 @@ async function getListData() {
             item_collection {
             itemid
             itemname
+            isfavorited
             statusid
             status_value{statusname}
             }
@@ -149,7 +150,7 @@ async function editList(listId, newName) {
   return executeGraphqlQuery(editListMutation, variables);
 }
 
-export const updateItemFavoritedStatus = async (itemId, itemname) => {
+export const updateItemFavoritedStatus = async (itemId, itemname, isfavorited) => {
   const updateItemFavoritedStatusMutation = `
   mutation updatefavorite($i: ID!, $j: itemInput!) {
     update_item(itemid: $i, input: $j) {
@@ -157,7 +158,7 @@ export const updateItemFavoritedStatus = async (itemId, itemname) => {
       isfavorited
     }
   }`;
-  const variables = { i: itemId, j: { isfavorited: true, itemname: itemname }};
+  const variables = { i: itemId, j: { isfavorited: isfavorited, itemname: itemname }};
   return executeGraphqlQuery(updateItemFavoritedStatusMutation, variables);
 };
 

@@ -74,7 +74,7 @@ const TaskGrid = () => {
 
   const handleFavoriteClick = async (task) => {
     try {
-      await updateItemFavoritedStatus(task.itemid, !task.itemname);
+      await updateItemFavoritedStatus(task.itemid, task.itemname, !task.isfavorited);
       fetchData();
     } catch (error) {
       console.error('Failed to update favorite status:', error);
@@ -162,7 +162,7 @@ const TaskGrid = () => {
         {listData.map((list) => {
           const notDoneTasks = list.item_collection.filter((task) => task.statusid !== 3);
           const doneTasks = list.item_collection.filter((task) => task.statusid === 3);
-
+          
           return (
             <Box
               key={list.listid}
@@ -204,6 +204,7 @@ const TaskGrid = () => {
               </Flex>
               <Divider mb={4} mt={4} borderColor='secondary.400' borderWidth={2} />
               {[...notDoneTasks, ...doneTasks].map((task) => (
+                
                 <Box
                   key={task.itemid}
                   mb={4}
@@ -234,7 +235,7 @@ const TaskGrid = () => {
                         aria-label="Favorite Task"
                         size="sm"
                         mr={2}
-                        colorScheme={task.isfavorited ? "yellow" : "gray"}
+                        colorScheme={task.isfavorited ? 'yellow' : 'gray'}
                         onClick={() => handleFavoriteClick(task)}
                       />
                       <IconButton
