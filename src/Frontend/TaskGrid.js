@@ -90,7 +90,9 @@ const TaskGrid = () => {
 
   const handleCheckboxClick = async (task) => {
     try {
-      await updateItemStatus(task.itemid, task.itemname, task.statusid = 3);
+      const newStatusId = task.statusid === 3 ? 1 : 3
+      console.log('Updating task status:', task.itemid, task.itemname, newStatusId);
+      await updateItemStatus(task.itemid, task.itemname, newStatusId);
       fetchData();
     } catch (error) {
       console.error('Failed to update status:', error);
@@ -240,7 +242,7 @@ const TaskGrid = () => {
                   }}
                 >
                   <Flex justifyContent="space-between" alignItems="center">
-                    <Checkbox isChecked={task.statusid === 3} colorScheme="teal" onClick={() => handleCheckboxClick(task)}>
+                    <Checkbox isChecked={task.statusid === 3} colorScheme="teal" onChange={() => handleCheckboxClick(task)}>
                       <Text as={task.statusid === 3 ? 's' : 'span'} color={task.statusid === 3 ? 'green.600' : 'gray.800'}>
                         {task.status_value.statusname}
                       </Text>
