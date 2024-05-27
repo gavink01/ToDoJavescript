@@ -141,7 +141,7 @@ const TaskGrid = () => {
   }
 
   return (
-    <Box bgGradient='linear(to-l, #7928CA, #FF0080)' h="100vh">
+    <Box>
       <SimpleGrid columns={[1, 2, 3]} spacing={6} p={5}>
         {listData.map((list) => {
           const notDoneTasks = list.item_collection.filter((task) => task.statusid !== 3);
