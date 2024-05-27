@@ -55,8 +55,8 @@ const theme = extendTheme({
         borderRadius: 'md',
         boxShadow: 'brutalShadow', // Applying custom shadow to all buttons
         _hover: {
-          transform: 'scale(1.07)',
-          boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.5)', // Optional hover effect
+          transform: 'scale(1.05)',
+        //   boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.5)', // Optional hover effect
         },
       },
     },
