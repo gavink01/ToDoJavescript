@@ -145,6 +145,24 @@ const theme = extendTheme({
         variant: 'outline',
       },
     },
+    Select: {
+      baseStyle: {
+        field: {
+          borderRadius: 'lg',
+          borderWidth: '2px',
+          borderColor: 'primary.500',
+          boxShadow: '4px 4px 0px #000000, 4px 4px 0px #000000',
+          _hover: {
+            borderColor: 'primary.700',
+            boxShadow: '4px 4px 0px #000000, 6px 6px 0px #000000',
+          },
+          _focus: {
+            borderColor: 'primary.700',
+            boxShadow: '4px 4px 0px #000000, 6px 6px 0px #000000',
+          },
+        },
+      },
+    },
   },
 });
 
