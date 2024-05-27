@@ -72,6 +72,10 @@ const TaskGrid = () => {
     onListModalOpen();
   };
 
+  const handleFavotiteClick = (task) => {
+
+  };
+
   const handleSave = async () => {
     setIsModalLoading(true);
     try {
@@ -220,7 +224,7 @@ const TaskGrid = () => {
                         mr={2}
                         colorScheme="yellow"
                         color={'white'}
-                        // onClick={() => handleEditClick(task, parseInt(list.listid))}
+                        // onClick={() => handleFavotiteClick(task, parseInt(list.listid))}
                       />
                       <IconButton
                         icon={<EditIcon />}
