@@ -151,10 +151,18 @@ const TaskGrid = () => {
             <Box
               key={list.listid}
               p={5}
-              shadow="md"
-              borderWidth="1px"
+              borderWidth="5px"
+              bg="secondary.100"
               borderRadius="md"
-              bg="gray.100"
+              boxShadow="4px 4px 0px #000000, 8px 8px 0px #000000"
+        sx={{
+                borderRightWidth: '4px',
+                borderBottomWidth: '4px',
+                borderTopWidth: '2px',
+                borderLeftWidth: '2px',
+                borderColor: 'black',
+                borderStyle: 'solid',
+              }}
             >
               <Flex justifyContent="space-between" alignItems="center">
                 <Heading size="md" color="teal.600">
@@ -188,6 +196,15 @@ const TaskGrid = () => {
                   borderRadius="md"
                   bg={task.statusid === 3 ? 'green.50' : 'white'}
                   borderColor={task.statusid === 3 ? 'green.200' : 'teal.200'}
+                  boxShadow="4px 4px 0px #000000, 8px 8px 0px #000000"
+                  sx={{
+                    borderRightWidth: '4px',
+                    borderBottomWidth: '4px',
+                    borderTopWidth: '2px',
+                    borderLeftWidth: '2px',
+                    borderColor: 'black',
+                    borderStyle: 'solid',
+                  }}
                 >
                   <Flex justifyContent="space-between" alignItems="center">
                     <Checkbox isChecked={task.statusid === 3} colorScheme="teal">
