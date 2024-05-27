@@ -141,7 +141,7 @@ const TaskGrid = () => {
   }
 
   return (
-    <Box>
+    <Box bg="gray.200" h="100vh">
       <SimpleGrid columns={[1, 2, 3]} spacing={6} p={5}>
         {listData.map((list) => {
           const notDoneTasks = list.item_collection.filter((task) => task.statusid !== 3);
@@ -165,7 +165,7 @@ const TaskGrid = () => {
               }}
             >
               <Flex justifyContent="space-between" alignItems="center">
-                <Heading size="md" color="teal.600">
+                <Heading size="lg" color="black">
                   {list.listname}
                 </Heading>
                 <Flex>
@@ -186,7 +186,7 @@ const TaskGrid = () => {
                   />
                 </Flex>
               </Flex>
-              <Divider mb={4} mt={4} borderColor='black' borderWidth={2} borderRadius={4} />
+              <Divider mb={4} mt={4} borderColor='secondary.400' borderWidth={2} />
               {[...notDoneTasks, ...doneTasks].map((task) => (
                 <Box
                   key={task.itemid}

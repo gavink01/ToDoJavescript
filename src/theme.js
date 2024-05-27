@@ -72,6 +72,7 @@ const theme = extendTheme({
     Heading: {
       baseStyle: {
         fontWeight: 'bold',
+        fontSize: 'lg',
       },
     },
     Text: {
