@@ -41,39 +41,108 @@ const theme = extendTheme({
     },
   },
   shadows: {
-    outline: '0 0 0 3px rgba(66, 153, 225, 0.6)',
-    custom: '4px 4px 0px #000000', // Custom shadow
     brutalShadow: '4px 4px 0px #000000, 4px 4px 0px #000000', // More complex shadow
   },
   fonts: {
-    heading: '"Roboto", sans-serif',
+    heading: '"Avenir Next", sans-serif',
     body: '"Roboto", sans-serif',
   },
   components: {
     Button: {
       baseStyle: {
-        borderRadius: 'md',
-        boxShadow: 'brutalShadow', // Applying custom shadow to all buttons
+        borderRadius: 'lg',
+        boxShadow: 'brutalShadow',
         _hover: {
-          transform: 'scale(1.05)',
-        //   boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.5)', // Optional hover effect
+          // transform: 'scale(1.05)',
+          boxShadow: '4px 4px 0px #000000, 6px 6px 0px #000000', // Ensure base shadow is retained
         },
       },
     },
-    Box: {
-      baseStyle: {
-        rounded: 'lg',
-        shadow: 'md',
-      },
+    Modal: {
+      baseStyle: (props) => ({
+        dialog: {
+          borderRadius: 'lg',
+          boxShadow: 'brutalShadow',
+          borderRightWidth: '6px',
+          borderBottomWidth: '6px',
+          borderTopWidth: '2px',
+          borderLeftWidth: '2px',
+          borderColor: 'black',
+          bg: props.colorMode === 'dark' ? 'gray.800' : 'white',
+        },
+      }),
     },
-    Heading: {
-      baseStyle: {
-        fontWeight: 'bold',
-      },
+    Popover: {
+      baseStyle: (props) => ({
+        content: {
+          borderRadius: 'lg',
+          boxShadow: 'brutalShadow',
+          borderRightWidth: '6px',
+          borderBottomWidth: '6px',
+          borderTopWidth: '2px',
+          borderLeftWidth: '2px',
+          borderColor: 'black',
+          bg: props.colorMode === 'dark' ? 'gray.800' : 'white',
+        },
+      }),
     },
-    Text: {
+    Input: {
       baseStyle: {
-        fontSize: 'md',
+        field: {
+          borderRadius: 'lg',
+          borderWidth: '2px',
+          borderColor: 'primary.500',
+          boxShadow: '4px 4px 0px #000000, 4px 4px 0px #000000',
+          _hover: {
+            borderColor: 'primary.700',
+            boxShadow: '4px 4px 0px #000000, 6px 6px 0px #000000',
+          },
+          _focus: {
+            borderColor: 'primary.700',
+            boxShadow: '4px 4px 0px #000000, 6px 6px 0px #000000',
+          },
+        },
+      },
+      sizes: {
+        md: {
+          field: {
+            h: 10,
+            fontSize: 'md',
+          },
+        },
+      },
+      variants: {
+        outline: {
+          field: {
+            borderColor: 'primary.500',
+            _hover: {
+              borderColor: 'primary.700',
+              boxShadow: '4px 4px 0px #000000, 6px 6px 0px #000000',
+            },
+            _focus: {
+              borderColor: 'primary.700',
+              boxShadow: '4px 4px 0px #000000, 6px 6px 0px #000000',
+            },
+          },
+        },
+        filled: {
+          field: {
+            bg: 'primary.50',
+            _hover: {
+              bg: 'primary.100',
+              boxShadow: '4px 4px 0px #000000, 6px 6px 0px #000000',
+            },
+            _focus: {
+              bg: 'primary.100',
+              borderColor: 'primary.700',
+              boxShadow: '4px 4px 0px #000000, 6px 6px 0px #000000',
+            },
+          },
+        },
+      },
+      defaultProps: {
+        size: 'md',
+        variant: 'outline',
       },
     },
   },
