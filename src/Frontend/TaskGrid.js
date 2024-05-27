@@ -154,7 +154,7 @@ const TaskGrid = () => {
               borderWidth="5px"
               bg="secondary.100"
               borderRadius="md"
-              boxShadow="4px 4px 0px #000000, 8px 8px 0px #000000"
+              boxShadow="brutalShadow"
         sx={{
                 borderRightWidth: '4px',
                 borderBottomWidth: '4px',
@@ -196,7 +196,7 @@ const TaskGrid = () => {
                   borderRadius="md"
                   bg={task.statusid === 3 ? 'green.50' : 'white'}
                   borderColor={task.statusid === 3 ? 'green.200' : 'teal.200'}
-                  boxShadow="4px 4px 0px #000000, 8px 8px 0px #000000"
+                  boxShadow="brutalShadow"
                   sx={{
                     borderRightWidth: '4px',
                     borderBottomWidth: '4px',

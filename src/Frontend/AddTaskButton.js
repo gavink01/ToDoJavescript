@@ -49,8 +49,9 @@ const TaskAddButton = ({ fetchData, listData }) => {
   position="fixed"
   bottom={4}
   right={4}
-  colorScheme="teal"
+  colorScheme="accent"
   onClick={onOpen}
+  w={'300px'}
 >
   Add Task
 </Button>

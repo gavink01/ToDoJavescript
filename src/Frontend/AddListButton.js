@@ -35,7 +35,7 @@ const ListAddButton = ({ fetchData }) => {
     <Box position="fixed" bottom={75} right={4}>
       <Popover>
         <PopoverTrigger>
-          <Button leftIcon={<AddIcon />} colorScheme="teal" size={'lg'} >
+          <Button leftIcon={<AddIcon />} colorScheme="accent" size={'lg'} width={'300px'} >
             Add List
           </Button>
         </PopoverTrigger>
@@ -51,7 +51,7 @@ const ListAddButton = ({ fetchData }) => {
                 mb={4}
                 mr={2}
               />
-              <Button onClick={handleAddList} isLoading={isAddingList} colorScheme="blue">
+              <Button onClick={handleAddList} isLoading={isAddingList} colorScheme="accent">
                 Add
               </Button>
             </Flex>
