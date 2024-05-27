@@ -41,7 +41,7 @@ const ListAddButton = ({ fetchData }) => {
         </PopoverTrigger>
         <PopoverContent>
           <PopoverCloseButton />
-          <PopoverHeader>Add a new list</PopoverHeader>
+          <PopoverHeader color="#539318" fontWeight="bold">Add a new list</PopoverHeader>
           <PopoverBody>
             <Flex>
               <Input
