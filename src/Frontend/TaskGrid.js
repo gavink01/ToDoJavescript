@@ -385,7 +385,6 @@ const TaskGrid = () => {
           </AlertDialogContent>
         </AlertDialogOverlay>
       </AlertDialog>
-      
     </Box>
   );
 };

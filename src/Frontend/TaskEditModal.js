@@ -16,7 +16,14 @@ import {
 } from '@chakra-ui/react';
 import { editItem } from '../Backend/Graphql_helper'; // Import the editItem function
 
-const TaskEditModal = ({ isOpen, onClose, task, listId, fetchData, listData }) => {
+const TaskEditModal = ({
+  isOpen,
+  onClose,
+  task,
+  listId,
+  fetchData,
+  listData,
+}) => {
   const [taskName, setTaskName] = useState(task.itemname);
   const [taskStatus, setTaskStatus] = useState(task.statusid);
   const [taskListId, setTaskListId] = useState(listId);
@@ -46,13 +53,13 @@ const TaskEditModal = ({ isOpen, onClose, task, listId, fetchData, listData }) =
             placeholder="Task Name"
             mb={4}
             value={taskName}
-            onChange={(e) => setTaskName(e.target.value)}
+            onChange={e => setTaskName(e.target.value)}
           />
           <Select
             placeholder="Select Status"
             mb={4}
             value={taskStatus}
-            onChange={(e) => setTaskStatus(parseInt(e.target.value))}
+            onChange={e => setTaskStatus(parseInt(e.target.value))}
           >
             <option value={1}>Backlog</option>
             <option value={2}>To do</option>
@@ -62,9 +69,9 @@ const TaskEditModal = ({ isOpen, onClose, task, listId, fetchData, listData }) =
             placeholder="Select List"
             mb={4}
             value={taskListId}
-            onChange={(e) => setTaskListId(e.target.value)}
+            onChange={e => setTaskListId(e.target.value)}
           >
-            {listData.map((list) => (
+            {listData.map(list => (
               <option key={list.listid} value={list.listid}>
                 {list.listname}
               </option>
@@ -74,7 +81,12 @@ const TaskEditModal = ({ isOpen, onClose, task, listId, fetchData, listData }) =
         <ModalFooter>
           {isSaving ? (
             <Flex align="center">
-              <Spinner size="md" thickness="4px" speed="0.65s" color="teal.500" />
+              <Spinner
+                size="md"
+                thickness="4px"
+                speed="0.65s"
+                color="teal.500"
+              />
               <Text ml={3}>Saving...</Text>
             </Flex>
           ) : (

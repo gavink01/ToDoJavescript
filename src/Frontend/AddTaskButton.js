@@ -39,22 +39,21 @@ const TaskAddButton = ({ fetchData, listData }) => {
     }
   };
 
-
   return (
     <>
       <Button
-  leftIcon={<AddIcon />}
-  aria-label="Add Task"
-  size="lg"
-  position="fixed"
-  bottom={75}
-  right={4}
-  colorScheme="accent"
-  onClick={onOpen}
-  w={'300px'}
->
-  Add Task
-</Button>
+        leftIcon={<AddIcon />}
+        aria-label="Add Task"
+        size="lg"
+        position="fixed"
+        bottom={75}
+        right={4}
+        colorScheme="accent"
+        onClick={onOpen}
+        w={'300px'}
+      >
+        Add Task
+      </Button>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
@@ -65,13 +64,13 @@ const TaskAddButton = ({ fetchData, listData }) => {
               placeholder="Task Title"
               mb={4}
               value={taskTitle}
-              onChange={(e) => setTaskTitle(e.target.value)}
+              onChange={e => setTaskTitle(e.target.value)}
             />
             <Select
               placeholder="Select Status"
               mb={4}
               value={taskStatus}
-              onChange={(e) => setTaskStatus(parseInt(e.target.value))}
+              onChange={e => setTaskStatus(parseInt(e.target.value))}
             >
               <option value={1}>Backlog</option>
               <option value={2}>To do</option>
@@ -80,23 +79,26 @@ const TaskAddButton = ({ fetchData, listData }) => {
             <Select
               placeholder="Select List"
               value={taskListId}
-              onChange={(e) => setTaskListId(e.target.value || '')}
+              onChange={e => setTaskListId(e.target.value || '')}
               mb={4}
             >
-              {listData.map((list) => (
+              {listData.map(list => (
                 <option key={list.listid} value={list.listid}>
                   {list.listname}
                 </option>
               ))}
             </Select>
-            <Flex>
-              
-            </Flex>
+            <Flex></Flex>
           </ModalBody>
           <ModalFooter>
             {isSaving ? (
               <Flex align="center">
-                <Spinner size="md" thickness="4px" speed="0.65s" color="teal.500" />
+                <Spinner
+                  size="md"
+                  thickness="4px"
+                  speed="0.65s"
+                  color="teal.500"
+                />
                 <Text ml={3}>Saving...</Text>
               </Flex>
             ) : (

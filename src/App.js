@@ -1,10 +1,8 @@
 // Library imports
 import React from 'react';
-import {
-  ChakraProvider,
-} from '@chakra-ui/react';
+import { ChakraProvider } from '@chakra-ui/react';
 
- // File imports
+// File imports
 import Header from './Frontend/Header';
 import TaskGrid from './Frontend/TaskGrid';
 import AddTaskButton from './Frontend/AddTaskButton';
@@ -15,7 +13,6 @@ function App() {
     <ChakraProvider theme={theme}>
       <Header />
       <TaskGrid />
-      {/* <AddTaskButton /> */}
     </ChakraProvider>
   );
 }

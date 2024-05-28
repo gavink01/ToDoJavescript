@@ -35,23 +35,34 @@ const ListAddButton = ({ fetchData }) => {
     <Box position="fixed" bottom={135} right={4}>
       <Popover>
         <PopoverTrigger>
-          <Button leftIcon={<AddIcon />} colorScheme="accent" size={'lg'} width={'300px'} >
+          <Button
+            leftIcon={<AddIcon />}
+            colorScheme="accent"
+            size={'lg'}
+            width={'300px'}
+          >
             Add List
           </Button>
         </PopoverTrigger>
         <PopoverContent>
           <PopoverCloseButton />
-          <PopoverHeader color="#539318" fontWeight="bold">Add a new list</PopoverHeader>
+          <PopoverHeader color="#539318" fontWeight="bold">
+            Add a new list
+          </PopoverHeader>
           <PopoverBody>
             <Flex>
               <Input
                 placeholder="New List Name"
                 value={newListName}
-                onChange={(e) => setNewListName(e.target.value)}
+                onChange={e => setNewListName(e.target.value)}
                 mb={4}
                 mr={2}
               />
-              <Button onClick={handleAddList} isLoading={isAddingList} colorScheme="accent">
+              <Button
+                onClick={handleAddList}
+                isLoading={isAddingList}
+                colorScheme="accent"
+              >
                 Add
               </Button>
             </Flex>

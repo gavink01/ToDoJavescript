@@ -44,13 +44,18 @@ const ListEditModal = ({ isOpen, onClose, list, fetchData }) => {
             placeholder="List Name"
             mb={4}
             value={listName}
-            onChange={(e) => setListName(e.target.value)}
+            onChange={e => setListName(e.target.value)}
           />
         </ModalBody>
         <ModalFooter>
           {isSaving ? (
             <Flex align="center">
-              <Spinner size="md" thickness="4px" speed="0.65s" color="teal.500" />
+              <Spinner
+                size="md"
+                thickness="4px"
+                speed="0.65s"
+                color="teal.500"
+              />
               <Text ml={3}>Saving...</Text>
             </Flex>
           ) : (

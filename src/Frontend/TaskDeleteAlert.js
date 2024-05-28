@@ -8,7 +8,7 @@ import {
   AlertDialogOverlay,
   Button,
   Spinner,
-  Flex
+  Flex,
 } from '@chakra-ui/react';
 
 const TaskDeleteAlert = ({ isOpen, onClose, onConfirmDelete }) => {
@@ -49,7 +49,12 @@ const TaskDeleteAlert = ({ isOpen, onClose, onConfirmDelete }) => {
             >
               {isDeleting ? (
                 <Flex align="center">
-                  <Spinner size="sm" thickness="2px" speed="0.65s" color="red.500" />
+                  <Spinner
+                    size="sm"
+                    thickness="2px"
+                    speed="0.65s"
+                    color="red.500"
+                  />
                 </Flex>
               ) : (
                 'Delete'
