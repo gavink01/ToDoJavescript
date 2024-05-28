@@ -20,7 +20,7 @@ import {
   Divider,
   useTheme,
 } from '@chakra-ui/react';
-import { EditIcon, DeleteIcon, AddIcon, StarIcon } from '@chakra-ui/icons';
+import { EditIcon, DeleteIcon, StarIcon } from '@chakra-ui/icons';
 import { getListData, editItem, addItem, deleteItem, deleteList, editList, updateItemFavoritedStatus, updateItemStatus } from '../Backend/Graphql_helper';
 import TaskEditModal from './TaskEditModal';
 import TaskAddButton from './AddTaskButton';
@@ -45,6 +45,7 @@ const TaskGrid = () => {
   const toast = useToast();
 
 
+  // Fetch list & task data from the Devii API
   const fetchData = async () => {
     setIsLoading(true);
     try {
@@ -57,21 +58,27 @@ const TaskGrid = () => {
     }
   };
 
+  // Fetch list & task data on component mount
   useEffect(() => {
     fetchData();
   }, []);
 
+
+  // Event handlers
+  // Handle edit button click for task
   const handleEditClick = (task, listId) => {
     setCurrentListId(listId);
     setCurrentTask(task);
     onOpen();
   };
 
+  // Handle edit button click for list
   const handleEditListClick = (list) => {
     setCurrentList(list);
     onListModalOpen();
   };
 
+  // Handle favorite button click for task
   const handleFavoriteClick = async (task) => {
     try {
       await updateItemFavoritedStatus(task.itemid, task.itemname, !task.isfavorited);
@@ -88,6 +95,7 @@ const TaskGrid = () => {
     }
   };
 
+  // Handle checkbox click for task
   const handleCheckboxClick = async (task) => {
     try {
       const newStatusId = task.statusid === 3 ? 1 : 3
@@ -106,6 +114,7 @@ const TaskGrid = () => {
     }
   };
 
+  // Handle save button click for task
   const handleSave = async () => {
     setIsModalLoading(true);
     try {
@@ -119,17 +128,20 @@ const TaskGrid = () => {
     }
   };
 
+  // Handle delete button click for task
   const handleDeleteClick = (itemId) => {
     setDeleteTaskId(itemId);
     setIsDeleting(false)
     onAlertOpen();
   };
 
+  // Handle delete button click for list
   const handleDeleteListClick = (listId) => {
     setDeleteListId(listId);
     onAlertOpen();
   };
 
+  // Handle delete confirmation
   const confirmDelete = async () => {
     try {
       if (deleteTaskId) {
@@ -163,6 +175,7 @@ const TaskGrid = () => {
     }
   };
 
+  // Spinner for loading between API calls
   // if (isLoading) {
   //   return (
   //     <Flex justifyContent="center" alignItems="center" height="100vh">
@@ -178,8 +191,8 @@ const TaskGrid = () => {
     <Box bg="gray.200" h="100vh">
       <SimpleGrid columns={[1, 2, 3]} spacing={6} p={5}>
         {listData.map((list) => {
-          const notDoneTasks = list.item_collection.filter((task) => task.statusid !== 3);
-          const doneTasks = list.item_collection.filter((task) => task.statusid === 3);
+          const notDoneTasks = list.item_collection.filter((task) => task.statusid !== 3); // Exclude done tasks
+          const doneTasks = list.item_collection.filter((task) => task.statusid === 3); // Include done tasks
           
           return (
             <Box
@@ -270,6 +283,7 @@ const TaskGrid = () => {
           );
         })}
       </SimpleGrid>
+      // Task edit modal
       {currentTask && (
         <TaskEditModal
           isOpen={Boolean(currentTask)}
@@ -279,7 +293,7 @@ const TaskGrid = () => {
           fetchData={fetchData}
           listData={listData}
         />
-      )}
+      )} // List edit modal
       {currentList && (
         <ListEditModal
           isOpen={isListModalOpen}
@@ -288,6 +302,7 @@ const TaskGrid = () => {
           fetchData={fetchData}
         />
       )}
+      // Alert dialog that displays on delete for list or task
       <AlertDialog isOpen={isAlertOpen} leastDestructiveRef={cancelRef} onClose={onAlertClose}>
         <AlertDialogOverlay>
           <AlertDialogContent>
