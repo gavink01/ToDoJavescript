@@ -163,16 +163,16 @@ const TaskGrid = () => {
     }
   };
 
-  if (isLoading) {
-    return (
-      <Flex justifyContent="center" alignItems="center" height="100vh">
-        <Spinner size="xl" thickness="4px" speed="0.65s" color="teal.500" />
-        <Text ml={4} fontSize="lg" color="teal.500">
-          Loading...
-        </Text>
-      </Flex>
-    );
-  }
+  // if (isLoading) {
+  //   return (
+  //     <Flex justifyContent="center" alignItems="center" height="100vh">
+  //       <Spinner size="xl" thickness="4px" speed="0.65s" color="teal.500" />
+  //       <Text ml={4} fontSize="lg" color="teal.500">
+  //         Loading...
+  //       </Text>
+  //     </Flex>
+  //   );
+  // }
 
   return (
     <Box bg="gray.200" h="100vh">

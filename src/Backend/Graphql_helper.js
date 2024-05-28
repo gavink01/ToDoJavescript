@@ -52,7 +52,7 @@ async function getListData() {
 
 
 // Mutation functions
-
+// Mutation to add an item
 const addItem = async (itemName, listId, statusId) => {
   const addItemMutation = `
     mutation ($i: itemInput) {
@@ -73,6 +73,7 @@ const addItem = async (itemName, listId, statusId) => {
   return executeGraphqlQuery(addItemMutation, variables);
 };
 
+// Mutation to add a list
 export const addList = async (listName) => {
   const addListMutation = `
     mutation ($i: listInput) {
@@ -87,6 +88,7 @@ export const addList = async (listName) => {
   return executeGraphqlQuery(addListMutation, variables);
 };
 
+// Mutation to delete an item
 export const deleteItem = async (itemId) => {
   const deleteItemMutation = `
     mutation ($i: ID!) {
@@ -99,6 +101,7 @@ export const deleteItem = async (itemId) => {
   return executeGraphqlQuery(deleteItemMutation, variables);
 };
 
+// Mutation to delete a list
 export const deleteList = async (listId) => {
   const deleteListMutation = `
     mutation ($i: ID!) {
@@ -111,7 +114,7 @@ export const deleteList = async (listId) => {
   return executeGraphqlQuery(deleteListMutation, variables);
 };
 
-
+// Mutation to edit an item
 async function editItem(itemId, newName, listId, statusId) {
     const editItemMutation = `
         mutation ($i: itemInput, $j: ID!) {
@@ -135,6 +138,7 @@ async function editItem(itemId, newName, listId, statusId) {
     return executeGraphqlQuery(editItemMutation, variables);
 }
 
+// Mutation to edit a list
 async function editList(listId, newName) {
   const editListMutation = `
     mutation ($i: listInput, $j: ID!) {
@@ -150,6 +154,7 @@ async function editList(listId, newName) {
   return executeGraphqlQuery(editListMutation, variables);
 }
 
+// Mutation to update item favorited status
 export const updateItemFavoritedStatus = async (itemId, itemname, isfavorited) => {
   const updateItemFavoritedStatusMutation = `
   mutation updatefavorite($i: ID!, $j: itemInput!) {
@@ -162,6 +167,7 @@ export const updateItemFavoritedStatus = async (itemId, itemname, isfavorited) =
   return executeGraphqlQuery(updateItemFavoritedStatusMutation, variables);
 };
 
+// Mutation to update item status
 export const updateItemStatus = async (itemId, itemname, statusId) => {
   const updateItemStatusMutation = `
   mutation updatestatus($i: ID!, $j: itemInput!) {
