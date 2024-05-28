@@ -1,25 +1,16 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import {
+  Button,
   AlertDialog,
   AlertDialogBody,
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogContent,
   AlertDialogOverlay,
-  Button,
-  Spinner,
-  Flex,
 } from '@chakra-ui/react';
 
-const TaskDeleteAlert = ({ isOpen, onClose, onConfirmDelete }) => {
+const DeleteAlertDialog = ({ isOpen, onClose, onConfirm, title }) => {
   const cancelRef = useRef();
-  const [isDeleting, setIsDeleting] = useState(false);
-
-  const handleConfirmDelete = async () => {
-    setIsDeleting(true);
-    await onConfirmDelete();
-    setIsDeleting(false);
-  };
 
   return (
     <AlertDialog
@@ -28,9 +19,9 @@ const TaskDeleteAlert = ({ isOpen, onClose, onConfirmDelete }) => {
       onClose={onClose}
     >
       <AlertDialogOverlay>
-        <AlertDialogContent bg="black" color="white">
-          <AlertDialogHeader fontSize="lg" fontWeight="bold" color="gold">
-            Delete Task
+        <AlertDialogContent>
+          <AlertDialogHeader fontSize="lg" fontWeight="bold">
+            {title}
           </AlertDialogHeader>
 
           <AlertDialogBody>
@@ -41,24 +32,8 @@ const TaskDeleteAlert = ({ isOpen, onClose, onConfirmDelete }) => {
             <Button ref={cancelRef} onClick={onClose}>
               Cancel
             </Button>
-            <Button
-              colorScheme="red"
-              onClick={handleConfirmDelete}
-              ml={3}
-              isDisabled={isDeleting}
-            >
-              {isDeleting ? (
-                <Flex align="center">
-                  <Spinner
-                    size="sm"
-                    thickness="2px"
-                    speed="0.65s"
-                    color="red.500"
-                  />
-                </Flex>
-              ) : (
-                'Delete'
-              )}
+            <Button colorScheme="red" onClick={onConfirm} ml={3}>
+              Delete
             </Button>
           </AlertDialogFooter>
         </AlertDialogContent>
@@ -67,4 +42,4 @@ const TaskDeleteAlert = ({ isOpen, onClose, onConfirmDelete }) => {
   );
 };
 
-export default TaskDeleteAlert;
+export default DeleteAlertDialog;

@@ -36,6 +36,7 @@ import ListEditModal from './ListEditModal';
 import ListAddButton from './AddListButton';
 import { brutalBorderStyles } from '../Styles/style';
 import ChatbotModal from './ChippChatbot';
+import TaskDeleteAlert from './TaskDeleteAlert';
 
 const TaskGrid = () => {
   const [listData, setListData] = useState([]);
@@ -357,34 +358,13 @@ const TaskGrid = () => {
           fetchData={fetchData}
         />
       )}
-      {/* Alert dialog that displays on delete for list or task */}
-      <AlertDialog
+      {/* Alert dialog that displays on delete for list or task */}    
+        <TaskDeleteAlert
         isOpen={isAlertOpen}
-        leastDestructiveRef={cancelRef}
         onClose={onAlertClose}
-      >
-        <AlertDialogOverlay>
-          <AlertDialogContent>
-            <AlertDialogHeader fontSize="lg" fontWeight="bold">
-              {deleteTaskId ? 'Delete Task' : 'Delete List'}
-            </AlertDialogHeader>
-
-            <AlertDialogBody>
-              Are you sure? You can't undo this action afterwards.
-            </AlertDialogBody>
-
-            <AlertDialogFooter>
-              <Button ref={cancelRef} onClick={onAlertClose}>
-                Cancel
-              </Button>
-
-              <Button colorScheme="red" onClick={confirmDelete} ml={3}>
-                Delete
-              </Button>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialogOverlay>
-      </AlertDialog>
+        onConfirm={confirmDelete}
+        title='Delete Confirmation'
+      />
     </Box>
   );
 };
