@@ -8,8 +8,6 @@ import {
   Flex,
   Heading,
   useDisclosure,
-  Button,
-  Spinner,
   useToast,
   Divider,
 } from '@chakra-ui/react';
@@ -155,7 +153,7 @@ const TaskGrid = () => {
   // Handle delete button click for task
   const handleDeleteClick = itemId => {
     setDeleteTaskId(itemId);
-    setDeleteListId(null); // Clear the list delete state
+    setDeleteListId(null); 
     setIsDeleting(false);
     onAlertOpen();
   };
@@ -163,7 +161,7 @@ const TaskGrid = () => {
   // Handle delete button click for list
   const handleDeleteListClick = listId => {
     setDeleteListId(listId);
-    setDeleteTaskId(null); // Clear the task delete state
+    setDeleteTaskId(null); 
     onAlertOpen();
   };
 

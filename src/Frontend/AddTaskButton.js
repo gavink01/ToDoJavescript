@@ -32,6 +32,7 @@ const TaskAddButton = ({ fetchData, listData }) => {
       await addItem(taskTitle, taskListId, taskStatus);
       fetchData();
       onClose();
+      setTaskTitle('');
       setIsSaving(false);
     } catch (error) {
       console.error('Failed to add task:', error);
