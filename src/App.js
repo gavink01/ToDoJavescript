@@ -4,13 +4,13 @@ import { ChakraProvider } from '@chakra-ui/react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Header from './Frontend/Header';
 import TaskGrid from './Frontend/TaskGrid';
-import AddTaskButton from './Frontend/AddTaskButton';
 import theme from './Styles/theme';
-import SignUp from './components/SignUp';
-import Login from './components/Login';
-import Logout from './components/Logout';
-import { AuthProvider } from './context/AuthContext';
-import ProtectedRoute from './components/ProtectedRoute';
+import SignUp from './Frontend/AuthComponents/SignUp';
+import Login from './Frontend/AuthComponents/Login';
+import Logout from './Frontend/AuthComponents/Logout';
+import { AuthProvider } from './AuthContext';
+import ProtectedRoute from './Frontend/AuthComponents/ProtectedRoute';
+import app from './Backend/Firebase';
 
 function App() {
   return (
