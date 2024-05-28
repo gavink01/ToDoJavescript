@@ -11,12 +11,6 @@ import {
   Button,
   Spinner,
   useToast,
-  AlertDialog,
-  AlertDialogBody,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogContent,
-  AlertDialogOverlay,
   Divider,
 } from '@chakra-ui/react';
 import { EditIcon, DeleteIcon, StarIcon } from '@chakra-ui/icons';
@@ -161,6 +155,7 @@ const TaskGrid = () => {
   // Handle delete button click for task
   const handleDeleteClick = itemId => {
     setDeleteTaskId(itemId);
+    setDeleteListId(null); // Clear the list delete state
     setIsDeleting(false);
     onAlertOpen();
   };
@@ -168,6 +163,7 @@ const TaskGrid = () => {
   // Handle delete button click for list
   const handleDeleteListClick = listId => {
     setDeleteListId(listId);
+    setDeleteTaskId(null); // Clear the task delete state
     onAlertOpen();
   };
 
@@ -176,31 +172,34 @@ const TaskGrid = () => {
     try {
       if (deleteTaskId) {
         await deleteItem(deleteTaskId);
+        setDeleteTaskId(null);
+        toast({
+          title: 'Task deleted.',
+          description: 'The task has been deleted successfully.',
+          status: 'success',
+          duration: 5000,
+          isClosable: true,
+        });
       }
       if (deleteListId) {
         await deleteList(deleteListId);
+        setDeleteListId(null);
+        toast({
+          title: 'List deleted.',
+          description: 'The list has been deleted successfully.',
+          status: 'success',
+          duration: 5000,
+          isClosable: true,
+        });
       }
       fetchData();
-      setDeleteTaskId(null);
-      setDeleteListId(null);
-      toast({
-        title: deleteTaskId ? 'Task deleted.' : 'List deleted.',
-        description: deleteTaskId
-          ? 'The task has been deleted successfully.'
-          : 'The list has been deleted successfully.',
-        status: 'success',
-        duration: 5000,
-        isClosable: true,
-      });
       onAlertClose();
     } catch (error) {
       console.error('Failed to delete:', error);
       setIsDeleting(false);
       toast({
         title: 'Error.',
-        description: deleteTaskId
-          ? 'Failed to delete the task.'
-          : 'Failed to delete the list.',
+        description: 'Failed to delete the item.',
         status: 'error',
         duration: 5000,
         isClosable: true,
@@ -208,18 +207,6 @@ const TaskGrid = () => {
       onAlertClose();
     }
   };
-
-  // Spinner for loading between API calls
-  // if (isLoading) {
-  //   return (
-  //     <Flex justifyContent="center" alignItems="center" height="100vh">
-  //       <Spinner size="xl" thickness="4px" speed="0.65s" color="teal.500" />
-  //       <Text ml={4} fontSize="lg" color="teal.500">
-  //         Loading...
-  //       </Text>
-  //     </Flex>
-  //   );
-  // }
 
   return (
     <Box bg="gray.200" h="100vh">
@@ -331,11 +318,11 @@ const TaskGrid = () => {
                   </Text>
                 </Box>
               ))}
-              <TaskAddButton fetchData={fetchData} listData={listData} />
-              <ListAddButton fetchData={fetchData} listData={listData} />
             </Box>
           );
         })}
+        <TaskAddButton fetchData={fetchData} listData={listData} />
+        <ListAddButton fetchData={fetchData} listData={listData} />
         <ChatbotModal />
       </SimpleGrid>
       {/* Task edit modal */}
@@ -363,7 +350,7 @@ const TaskGrid = () => {
         isOpen={isAlertOpen}
         onClose={onAlertClose}
         onConfirm={confirmDelete}
-        title='Delete Confirmation'
+        title={deleteTaskId ? 'Delete Task' : 'Delete List'}
       />
     </Box>
   );
