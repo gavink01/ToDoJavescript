@@ -283,7 +283,7 @@ const TaskGrid = () => {
           );
         })}
       </SimpleGrid>
-      // Task edit modal
+      {/* Task edit modal */}
       {currentTask && (
         <TaskEditModal
           isOpen={Boolean(currentTask)}
@@ -293,7 +293,8 @@ const TaskGrid = () => {
           fetchData={fetchData}
           listData={listData}
         />
-      )} // List edit modal
+      )} 
+      {/* List edit modal */}
       {currentList && (
         <ListEditModal
           isOpen={isListModalOpen}
@@ -302,7 +303,7 @@ const TaskGrid = () => {
           fetchData={fetchData}
         />
       )}
-      // Alert dialog that displays on delete for list or task
+      {/* Alert dialog that displays on delete for list or task */}
       <AlertDialog isOpen={isAlertOpen} leastDestructiveRef={cancelRef} onClose={onAlertClose}>
         <AlertDialogOverlay>
           <AlertDialogContent>
