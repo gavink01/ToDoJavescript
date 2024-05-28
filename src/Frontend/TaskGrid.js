@@ -189,14 +189,7 @@ const TaskGrid = () => {
               bg="secondary.100"
               borderRadius="md"
               boxShadow="brutalShadow"
-              sx={{
-                borderRightWidth: '4px',
-                borderBottomWidth: '4px',
-                borderTopWidth: '2px',
-                borderLeftWidth: '2px',
-                borderColor: 'black',
-                borderStyle: 'solid',
-              }}
+              sx={brutalBorderStyles}
             >
               <Flex justifyContent="space-between" alignItems="center">
                 <Heading size="lg" color="black">
@@ -232,14 +225,7 @@ const TaskGrid = () => {
                   bg={task.statusid === 3 ? 'green.50' : 'white'}
                   borderColor={task.statusid === 3 ? 'green.200' : 'teal.200'}
                   boxShadow="brutalShadow"
-                  sx={{
-                    borderRightWidth: '4px',
-                    borderBottomWidth: '4px',
-                    borderTopWidth: '2px',
-                    borderLeftWidth: '2px',
-                    borderColor: 'black',
-                    borderStyle: 'solid',
-                  }}
+                  sx={brutalBorderStyles}
                 >
                   <Flex justifyContent="space-between" alignItems="center">
                     <Checkbox isChecked={task.statusid === 3} colorScheme="teal" onChange={() => handleCheckboxClick(task)}>
