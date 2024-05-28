@@ -8,7 +8,7 @@ import {
 import Header from './Frontend/Header';
 import TaskGrid from './Frontend/TaskGrid';
 import AddTaskButton from './Frontend/AddTaskButton';
-import theme from './theme';
+import theme from './Styles/theme';
 
 function App() {
   return (

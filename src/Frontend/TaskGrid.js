@@ -26,6 +26,7 @@ import TaskEditModal from './TaskEditModal';
 import TaskAddButton from './AddTaskButton';
 import ListEditModal from './ListEditModal'; 
 import ListAddButton from './AddListButton';
+import { brutalBorderStyles } from '../Styles/style';
 
 const TaskGrid = () => {
   const [listData, setListData] = useState([]);
@@ -43,7 +44,6 @@ const TaskGrid = () => {
   const cancelRef = useRef();
   const toast = useToast();
 
-  const theme = useTheme();
 
   const fetchData = async () => {
     setIsLoading(true);
