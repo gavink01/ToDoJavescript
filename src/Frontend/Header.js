@@ -15,10 +15,10 @@ import {
 
 const Header = () => {
   return (
-    <Box bg="tomato" w="100%" p={4} color="white" >
+    <Box bgGradient='linear(to-l, #7928CA, #FF0080)'w="100%" p={4} sx={{ borderBottomWidth: '4px', borderColor: 'black' }} >
       <Flex h={16} alignItems={'center'} justifyContent={'center'} >
-        <Text fontSize="2xl" fontWeight="bold">
-          ToDoApp
+        <Text fontSize="4em" fontWeight="bold" color={'black'}>
+          To Do App
         </Text>
       </Flex>
     </Box>

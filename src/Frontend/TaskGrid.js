@@ -8,7 +8,6 @@ import {
   Flex,
   Heading,
   useDisclosure,
-
   Button,
   Spinner,
   useToast,
@@ -18,17 +17,30 @@ import {
   AlertDialogHeader,
   AlertDialogContent,
   AlertDialogOverlay,
+  Divider,
 } from '@chakra-ui/react';
-import { EditIcon, DeleteIcon, AddIcon, TriangleUpIcon } from '@chakra-ui/icons';
-import { getListData, editItem, addItem, deleteItem, deleteList, editList } from '../Backend/Graphql_helper';
+import { EditIcon, DeleteIcon, StarIcon } from '@chakra-ui/icons';
+import {
+  getListData,
+  editItem,
+  addItem,
+  deleteItem,
+  deleteList,
+  editList,
+  updateItemFavoritedStatus,
+  updateItemStatus,
+} from '../Backend/Graphql_helper';
 import TaskEditModal from './TaskEditModal';
 import TaskAddButton from './AddTaskButton';
-import ListEditModal from './ListEditModal'; 
+import ListEditModal from './ListEditModal';
+import ListAddButton from './AddListButton';
+import { brutalBorderStyles } from '../Styles/style';
+import ChatbotModal from './ChippChatbot';
 
 const TaskGrid = () => {
   const [listData, setListData] = useState([]);
   const [currentTask, setCurrentTask] = useState(null);
-  const [currentList, setCurrentList] = useState(null); 
+  const [currentList, setCurrentList] = useState(null);
   const [currentListId, setCurrentListId] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isModalLoading, setIsModalLoading] = useState(false);
@@ -36,11 +48,20 @@ const TaskGrid = () => {
   const [deleteListId, setDeleteListId] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { isOpen: isListModalOpen, onOpen: onListModalOpen, onClose: onListModalClose } = useDisclosure();
-  const { isOpen: isAlertOpen, onOpen: onAlertOpen, onClose: onAlertClose } = useDisclosure();
+  const {
+    isOpen: isListModalOpen,
+    onOpen: onListModalOpen,
+    onClose: onListModalClose,
+  } = useDisclosure();
+  const {
+    isOpen: isAlertOpen,
+    onOpen: onAlertOpen,
+    onClose: onAlertClose,
+  } = useDisclosure();
   const cancelRef = useRef();
   const toast = useToast();
 
+  // Fetch list & task data from the Devii API
   const fetchData = async () => {
     setIsLoading(true);
     try {
@@ -53,25 +74,80 @@ const TaskGrid = () => {
     }
   };
 
+  // Fetch list & task data on component mount
   useEffect(() => {
     fetchData();
   }, []);
 
+  // Event handlers
+  // Handle edit button click for task
   const handleEditClick = (task, listId) => {
     setCurrentListId(listId);
     setCurrentTask(task);
     onOpen();
   };
 
-  const handleEditListClick = (list) => {
+  // Handle edit button click for list
+  const handleEditListClick = list => {
     setCurrentList(list);
     onListModalOpen();
   };
 
+  // Handle favorite button click for task
+  const handleFavoriteClick = async task => {
+    try {
+      await updateItemFavoritedStatus(
+        task.itemid,
+        task.itemname,
+        !task.isfavorited
+      );
+      fetchData();
+    } catch (error) {
+      console.error('Failed to update favorite status:', error);
+      toast({
+        title: 'Error.',
+        description: 'Failed to update favorite status.',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+  };
+
+  // Handle checkbox click for task
+  const handleCheckboxClick = async task => {
+    try {
+      const newStatusId = task.statusid === 3 ? 1 : 3;
+      console.log(
+        'Updating task status:',
+        task.itemid,
+        task.itemname,
+        newStatusId
+      );
+      await updateItemStatus(task.itemid, task.itemname, newStatusId);
+      fetchData();
+    } catch (error) {
+      console.error('Failed to update status:', error);
+      toast({
+        title: 'Error.',
+        description: 'Failed to update status.',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+  };
+
+  // Handle save button click for task
   const handleSave = async () => {
     setIsModalLoading(true);
     try {
-      await editItem(currentTask.itemid, currentTask.itemname, currentListId, currentTask.statusid);
+      await editItem(
+        currentTask.itemid,
+        currentTask.itemname,
+        currentListId,
+        currentTask.statusid
+      );
       fetchData();
       onClose();
       setIsModalLoading(false);
@@ -81,17 +157,20 @@ const TaskGrid = () => {
     }
   };
 
-  const handleDeleteClick = (itemId) => {
+  // Handle delete button click for task
+  const handleDeleteClick = itemId => {
     setDeleteTaskId(itemId);
-    setIsDeleting(false)
+    setIsDeleting(false);
     onAlertOpen();
   };
 
-  const handleDeleteListClick = (listId) => {
+  // Handle delete button click for list
+  const handleDeleteListClick = listId => {
     setDeleteListId(listId);
     onAlertOpen();
   };
 
+  // Handle delete confirmation
   const confirmDelete = async () => {
     try {
       if (deleteTaskId) {
@@ -105,7 +184,9 @@ const TaskGrid = () => {
       setDeleteListId(null);
       toast({
         title: deleteTaskId ? 'Task deleted.' : 'List deleted.',
-        description: deleteTaskId ? 'The task has been deleted successfully.' : 'The list has been deleted successfully.',
+        description: deleteTaskId
+          ? 'The task has been deleted successfully.'
+          : 'The list has been deleted successfully.',
         status: 'success',
         duration: 5000,
         isClosable: true,
@@ -116,7 +197,9 @@ const TaskGrid = () => {
       setIsDeleting(false);
       toast({
         title: 'Error.',
-        description: deleteTaskId ? 'Failed to delete the task.' : 'Failed to delete the list.',
+        description: deleteTaskId
+          ? 'Failed to delete the task.'
+          : 'Failed to delete the list.',
         status: 'error',
         duration: 5000,
         isClosable: true,
@@ -125,35 +208,41 @@ const TaskGrid = () => {
     }
   };
 
-  if (isLoading) {
-    return (
-      <Flex justifyContent="center" alignItems="center" height="100vh">
-        <Spinner size="xl" thickness="4px" speed="0.65s" color="teal.500" />
-        <Text ml={4} fontSize="lg" color="teal.500">
-          Loading...
-        </Text>
-      </Flex>
-    );
-  }
+  // Spinner for loading between API calls
+  // if (isLoading) {
+  //   return (
+  //     <Flex justifyContent="center" alignItems="center" height="100vh">
+  //       <Spinner size="xl" thickness="4px" speed="0.65s" color="teal.500" />
+  //       <Text ml={4} fontSize="lg" color="teal.500">
+  //         Loading...
+  //       </Text>
+  //     </Flex>
+  //   );
+  // }
 
   return (
-    <>
+    <Box bg="gray.200" h="100vh">
       <SimpleGrid columns={[1, 2, 3]} spacing={6} p={5}>
-        {listData.map((list) => {
-          const notDoneTasks = list.item_collection.filter((task) => task.statusid !== 3);
-          const doneTasks = list.item_collection.filter((task) => task.statusid === 3);
+        {listData.map(list => {
+          const notDoneTasks = list.item_collection.filter(
+            task => task.statusid !== 3
+          ); // Exclude done tasks
+          const doneTasks = list.item_collection.filter(
+            task => task.statusid === 3
+          ); // Include done tasks
 
           return (
             <Box
               key={list.listid}
               p={5}
-              shadow="md"
-              borderWidth="1px"
+              borderWidth="5px"
+              bg="secondary.100"
               borderRadius="md"
-              bg="gray.100"
+              boxShadow="brutalShadow"
+              sx={brutalBorderStyles}
             >
               <Flex justifyContent="space-between" alignItems="center">
-                <Heading size="md" mb={4} color="teal.600">
+                <Heading size="lg" color="black">
                   {list.listname}
                 </Heading>
                 <Flex>
@@ -174,7 +263,13 @@ const TaskGrid = () => {
                   />
                 </Flex>
               </Flex>
-              {[...notDoneTasks, ...doneTasks].map((task) => (
+              <Divider
+                mb={4}
+                mt={4}
+                borderColor="secondary.400"
+                borderWidth={2}
+              />
+              {[...notDoneTasks, ...doneTasks].map(task => (
                 <Box
                   key={task.itemid}
                   mb={4}
@@ -183,21 +278,40 @@ const TaskGrid = () => {
                   borderRadius="md"
                   bg={task.statusid === 3 ? 'green.50' : 'white'}
                   borderColor={task.statusid === 3 ? 'green.200' : 'teal.200'}
+                  boxShadow="brutalShadow"
+                  sx={brutalBorderStyles}
                 >
                   <Flex justifyContent="space-between" alignItems="center">
-                    <Checkbox isChecked={task.statusid === 3} colorScheme="teal">
-                      <Text as={task.statusid === 3 ? 's' : 'span'} color={task.statusid === 3 ? 'green.600' : 'gray.800'}>
+                    <Checkbox
+                      isChecked={task.statusid === 3}
+                      colorScheme="teal"
+                      onChange={() => handleCheckboxClick(task)}
+                    >
+                      <Text
+                        as={task.statusid === 3 ? 's' : 'span'}
+                        color={task.statusid === 3 ? 'green.600' : 'gray.800'}
+                      >
                         {task.status_value.statusname}
                       </Text>
                     </Checkbox>
                     <Flex>
+                      <IconButton
+                        icon={<StarIcon />}
+                        aria-label="Favorite Task"
+                        size="sm"
+                        mr={2}
+                        colorScheme={task.isfavorited ? 'yellow' : 'gray'}
+                        onClick={() => handleFavoriteClick(task)}
+                      />
                       <IconButton
                         icon={<EditIcon />}
                         aria-label="Edit Task"
                         size="sm"
                         mr={2}
                         colorScheme="blue"
-                        onClick={() => handleEditClick(task, parseInt(list.listid))}
+                        onClick={() =>
+                          handleEditClick(task, parseInt(list.listid))
+                        }
                       />
                       <IconButton
                         icon={<DeleteIcon />}
@@ -208,15 +322,22 @@ const TaskGrid = () => {
                       />
                     </Flex>
                   </Flex>
-                  <Text mt={2} color={task.statusid === 3 ? 'green.600' : 'gray.700'}>
+                  <Text
+                    mt={2}
+                    color={task.statusid === 3 ? 'green.600' : 'gray.700'}
+                  >
                     {task.itemname}
                   </Text>
                 </Box>
               ))}
+              <TaskAddButton fetchData={fetchData} listData={listData} />
+              <ListAddButton fetchData={fetchData} listData={listData} />
             </Box>
           );
         })}
+        <ChatbotModal />
       </SimpleGrid>
+      {/* Task edit modal */}
       {currentTask && (
         <TaskEditModal
           isOpen={Boolean(currentTask)}
@@ -227,6 +348,7 @@ const TaskGrid = () => {
           listData={listData}
         />
       )}
+      {/* List edit modal */}
       {currentList && (
         <ListEditModal
           isOpen={isListModalOpen}
@@ -235,15 +357,21 @@ const TaskGrid = () => {
           fetchData={fetchData}
         />
       )}
-      <TaskAddButton fetchData={fetchData} listData={listData} />
-      <AlertDialog isOpen={isAlertOpen} leastDestructiveRef={cancelRef} onClose={onAlertClose}>
+      {/* Alert dialog that displays on delete for list or task */}
+      <AlertDialog
+        isOpen={isAlertOpen}
+        leastDestructiveRef={cancelRef}
+        onClose={onAlertClose}
+      >
         <AlertDialogOverlay>
           <AlertDialogContent>
             <AlertDialogHeader fontSize="lg" fontWeight="bold">
               {deleteTaskId ? 'Delete Task' : 'Delete List'}
             </AlertDialogHeader>
 
-            <AlertDialogBody>Are you sure? You can't undo this action afterwards.</AlertDialogBody>
+            <AlertDialogBody>
+              Are you sure? You can't undo this action afterwards.
+            </AlertDialogBody>
 
             <AlertDialogFooter>
               <Button ref={cancelRef} onClick={onAlertClose}>
@@ -257,7 +385,8 @@ const TaskGrid = () => {
           </AlertDialogContent>
         </AlertDialogOverlay>
       </AlertDialog>
-    </>
+      
+    </Box>
   );
 };
 

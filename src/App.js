@@ -8,10 +8,11 @@ import {
 import Header from './Frontend/Header';
 import TaskGrid from './Frontend/TaskGrid';
 import AddTaskButton from './Frontend/AddTaskButton';
+import theme from './Styles/theme';
 
 function App() {
   return (
-    <ChakraProvider >
+    <ChakraProvider theme={theme}>
       <Header />
       <TaskGrid />
       {/* <AddTaskButton /> */}

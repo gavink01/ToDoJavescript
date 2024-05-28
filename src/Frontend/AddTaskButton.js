@@ -14,7 +14,7 @@ import {
   Select,
   Spinner,
   Flex,
-  Text
+  Text,
 } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
 import { addItem, addList } from '../Backend/Graphql_helper';
@@ -24,9 +24,7 @@ const TaskAddButton = ({ fetchData, listData }) => {
   const [taskTitle, setTaskTitle] = useState('');
   const [taskStatus, setTaskStatus] = useState(1);
   const [taskListId, setTaskListId] = useState(''); // Initialize with an empty string
-  const [newListName, setNewListName] = useState('');
   const [isSaving, setIsSaving] = useState(false);
-  const [isAddingList, setIsAddingList] = useState(false);
 
   const handleAddTask = async () => {
     setIsSaving(true);
@@ -41,32 +39,22 @@ const TaskAddButton = ({ fetchData, listData }) => {
     }
   };
 
-  const handleAddList = async () => {
-    setIsAddingList(true);
-    try {
-      const newList = await addList(newListName);
-      fetchData();
-      setTaskListId(newList.data.create_list.listid); // Update the task list ID to the newly created list
-      setNewListName('');
-      setIsAddingList(false);
-    } catch (error) {
-      console.error('Failed to add list:', error);
-      setIsAddingList(false);
-    }
-  };
 
   return (
     <>
-      <IconButton
-        icon={<AddIcon />}
-        aria-label="Add Task"
-        size="lg"
-        position="fixed"
-        bottom={4}
-        right={4}
-        colorScheme="teal"
-        onClick={onOpen}
-      />
+      <Button
+  leftIcon={<AddIcon />}
+  aria-label="Add Task"
+  size="lg"
+  position="fixed"
+  bottom={75}
+  right={4}
+  colorScheme="accent"
+  onClick={onOpen}
+  w={'300px'}
+>
+  Add Task
+</Button>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
@@ -102,16 +90,7 @@ const TaskAddButton = ({ fetchData, listData }) => {
               ))}
             </Select>
             <Flex>
-              <Input
-                placeholder="New List Name"
-                value={newListName}
-                onChange={(e) => setNewListName(e.target.value)}
-                mb={4}
-                mr={2}
-              />
-              <Button onClick={handleAddList} isLoading={isAddingList} colorScheme="teal">
-                Add List
-              </Button>
+              
             </Flex>
           </ModalBody>
           <ModalFooter>
