@@ -47,7 +47,7 @@ const TaskAddButton = ({ fetchData, listData }) => {
   aria-label="Add Task"
   size="lg"
   position="fixed"
-  bottom={4}
+  bottom={75}
   right={4}
   colorScheme="accent"
   onClick={onOpen}

@@ -35,6 +35,7 @@ import TaskAddButton from './AddTaskButton';
 import ListEditModal from './ListEditModal';
 import ListAddButton from './AddListButton';
 import { brutalBorderStyles } from '../Styles/style';
+import ChatbotModal from './ChippChatbot';
 
 const TaskGrid = () => {
   const [listData, setListData] = useState([]);
@@ -334,6 +335,7 @@ const TaskGrid = () => {
             </Box>
           );
         })}
+        <ChatbotModal />
       </SimpleGrid>
       {/* Task edit modal */}
       {currentTask && (
@@ -383,6 +385,7 @@ const TaskGrid = () => {
           </AlertDialogContent>
         </AlertDialogOverlay>
       </AlertDialog>
+      
     </Box>
   );
 };

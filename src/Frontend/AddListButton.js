@@ -32,7 +32,7 @@ const ListAddButton = ({ fetchData }) => {
   };
 
   return (
-    <Box position="fixed" bottom={75} right={4}>
+    <Box position="fixed" bottom={135} right={4}>
       <Popover>
         <PopoverTrigger>
           <Button leftIcon={<AddIcon />} colorScheme="accent" size={'lg'} width={'300px'} >
