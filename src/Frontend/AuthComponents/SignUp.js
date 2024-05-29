@@ -1,8 +1,20 @@
 // src/components/SignUp.js
 import React, { useState } from 'react';
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
-import { Box, Heading, Input, Button } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  Container,
+  Divider,
+  FormControl,
+  FormLabel,
+  Heading,
+  Input,
+  Stack,
+  Text,
+} from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
+import { brutalBorderStyles } from '../../Styles/style';
 
 const SignUp = () => {
   const [email, setEmail] = useState('');
@@ -22,25 +34,53 @@ const SignUp = () => {
   };
 
   return (
-    <Box p={4}>
-      <Heading>Sign Up</Heading>
-      {error && <p>{error}</p>}
-      <Input
-        type="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        placeholder="Email"
-        mb={4}
-      />
-      <Input
-        type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        placeholder="Password"
-        mb={4}
-      />
-      <Button onClick={handleSignUp}>Sign Up</Button>
-      <Button onClick={() => navigate('/login')}>Login</Button>
+    <Box bg="gray.200" h="100vh">
+      <Container maxW="lg" py={{ base: '12', md: '24' }} px={{ base: '0', sm: '8' }}>
+        <Stack spacing="8">
+          <Stack spacing="6">
+            <Stack spacing={{ base: '2', md: '3' }} textAlign="center">
+              <Heading size={{ base: 'sm', md: 'md' }}>Create a new account</Heading>
+            </Stack>
+          </Stack>
+          <Box
+            py={{ base: '0', sm: '8' }}
+            px={{ base: '4', sm: '10' }}
+            bg={{ base: 'secondary.100', sm: 'white' }}
+            boxShadow="brutalShadow"
+            sx={brutalBorderStyles}
+            borderRadius="lg"
+          >
+            <Stack spacing="6">
+              <Stack spacing="5">
+                <FormControl>
+                  <FormLabel htmlFor="email">Email</FormLabel>
+                  <Input
+                    id="email"
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
+                </FormControl>
+                <FormControl>
+                  <FormLabel htmlFor="password">Password</FormLabel>
+                  <Input
+                    id="password"
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                </FormControl>
+              </Stack>
+              {error && <Text color="red.500">{error}</Text>}
+              <Stack spacing="6">
+                <Button colorScheme="accent" onClick={handleSignUp}>Sign Up</Button>
+                <Divider />
+                <Button colorScheme='secondary' onClick={() => navigate('/login')}>Login</Button>
+              </Stack>
+            </Stack>
+          </Box>
+        </Stack>
+      </Container>
     </Box>
   );
 };
