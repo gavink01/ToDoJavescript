@@ -3,15 +3,8 @@ import {
   Box,
   Flex,
   Text,
-  Avatar,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-  IconButton,
-  useColorModeValue,
-  Center,
 } from '@chakra-ui/react';
+import Logout from './AuthComponents/Logout';
 
 const Header = () => {
   return (
@@ -21,10 +14,11 @@ const Header = () => {
       p={4}
       sx={{ borderBottomWidth: '4px', borderColor: 'black' }}
     >
-      <Flex h={16} alignItems={'center'} justifyContent={'center'}>
+      <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
         <Text fontSize="4em" fontWeight="bold" color={'black'}>
           To Do App
         </Text>
+        <Logout />
       </Flex>
     </Box>
   );
