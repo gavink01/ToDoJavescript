@@ -41,6 +41,7 @@ const Login = () => {
         mb={4}
       />
       <Button onClick={handleLogin}>Login</Button>
+      <Button onClick={() => navigate('/signup')}>Sign Up</Button>
     </Box>
   );
 };
