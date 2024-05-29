@@ -36,17 +36,18 @@ const Login = () => {
   };
 
   return (
+    <Box bg="gray.200" h="100vh">
     <Container maxW="lg" py={{ base: '12', md: '24' }} px={{ base: '0', sm: '8' }}>
       <Stack spacing="8">
         <Stack spacing="6">
           <Stack spacing={{ base: '2', md: '3' }} textAlign="center">
-            <Heading size={{ base: 'xs', md: 'sm' }}>Log in to your account</Heading>
+            <Heading size={{ base: 'sm', md: 'md' }}>Log in to your account</Heading>
           </Stack>
         </Stack>
         <Box
           py={{ base: '0', sm: '8' }}
           px={{ base: '4', sm: '10' }}
-          bg={{ base: 'transparent', sm: 'bg.surface' }}
+          bg={{ base: 'secondary.100', sm: 'white' }}
           boxShadow={{ base: 'none', sm: 'md' }}
           borderRadius={{ base: 'none', sm: 'xl' }}
         >
@@ -73,14 +74,15 @@ const Login = () => {
             </Stack>
             {error && <Text color="red.500">{error}</Text>}
             <Stack spacing="6">
-              <Button onClick={handleLogin}>Sign in</Button>
+              <Button  colorScheme="accent" onClick={handleLogin}>Sign In</Button>
               <Divider />
-              <Button variant="outline" onClick={() => navigate('/signup')}>SignUp</Button>
+              <Button colorScheme='secondary' onClick={() => navigate('/signup')}>Sign Up</Button>
             </Stack>
           </Stack>
         </Box>
       </Stack>
     </Container>
+    </Box>
   );
 };
 
