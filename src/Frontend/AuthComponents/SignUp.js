@@ -1,6 +1,7 @@
 // src/components/SignUp.js
 import React, { useState } from 'react';
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
+import { Box, Heading, Input, Button } from '@chakra-ui/react';
 
 const SignUp = () => {
   const [email, setEmail] = useState('');
@@ -18,23 +19,23 @@ const SignUp = () => {
   };
 
   return (
-    <div>
-      <h2>Sign Up</h2>
+    <Box>
+      <Heading>Sign Up</Heading>
       {error && <p>{error}</p>}
-      <input
+      <Input
         type="email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         placeholder="Email"
       />
-      <input
+      <Input
         type="password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         placeholder="Password"
       />
-      <button onClick={handleSignUp}>Sign Up</button>
-    </div>
+      <Button onClick={handleSignUp}>Sign Up</Button>
+    </Box>
   );
 };
 

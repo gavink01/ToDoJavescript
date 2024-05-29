@@ -1,6 +1,7 @@
 // src/components/Logout.js
 import React from 'react';
 import { getAuth, signOut } from 'firebase/auth';
+import { Button } from '@chakra-ui/react';
 
 const Logout = () => {
   const handleLogout = async () => {
@@ -14,7 +15,7 @@ const Logout = () => {
   };
 
   return (
-    <button onClick={handleLogout}>Logout</button>
+    <Button onClick={handleLogout}>Logout</Button>
   );
 };
 
