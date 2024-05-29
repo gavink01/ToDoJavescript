@@ -17,6 +17,7 @@ import {
   Text,
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
+import { brutalBorderStyles } from '../../Styles/style';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -48,8 +49,9 @@ const Login = () => {
           py={{ base: '0', sm: '8' }}
           px={{ base: '4', sm: '10' }}
           bg={{ base: 'secondary.100', sm: 'white' }}
-          boxShadow={{ base: 'none', sm: 'md' }}
-          borderRadius={{ base: 'none', sm: 'xl' }}
+          boxShadow="brutalShadow"
+          sx={brutalBorderStyles}
+          borderRadius="lg"
         >
           <Stack spacing="6">
             <Stack spacing="5">
